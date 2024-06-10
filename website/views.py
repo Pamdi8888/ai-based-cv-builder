@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
-from query import enhance_text
+from .query import enhance_text
 
 views = Blueprint('views', __name__)
 
@@ -18,7 +18,7 @@ def home():
 
 @views.route('/enhance', methods=['POST'])
 def enhance():
-    
+
     data = request.get_json()
     prompt = data['prompt']
     enhanced_text = enhance_text(prompt)
