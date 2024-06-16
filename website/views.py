@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
-from .llm\query import enhance_text
+from .llm.query import enhance_text
 
 views = Blueprint('views', __name__)
 
