@@ -7,18 +7,24 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        data = request.form
+        raw_data = request.form
         # name = request.form.get('name')
-        if len(data['name'])*len(data['email'])*len(data['organization']) > 0:
-            print(data)
-            return data
+        if len(raw_data['name']) * len(raw_data['email']) * len(raw_data['organization']) > 0:
+            print(raw_data)
+            data = {
+                'name': raw_data['name'],
+                'email': raw_data['email'],
+                'organizations': raw_data['organization']
+            }
+            return render_template('temp1.html', **data)
+            # return render_template('home.html')
         else:
             flash('Any field cannot be blank', category='error')
     return render_template('home.html')
 
+
 @views.route('/enhance', methods=['POST'])
 def enhance():
-
     data = request.get_json()
     prompt = data['prompt']
     enhanced_text = enhance_text(prompt)

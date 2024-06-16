@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Param Gandhi's Resume</title>
+    <title>{{ name }}'s Resume</title>
     <style>
         @page {
             size: A4;
@@ -81,63 +81,79 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="profile-picture.png" alt="Profile Picture">
+            <img src="{{ url_for('static', filename='profile-picture.png') }}" alt="Profile Picture">
             <div class="details">
-                <h1>Param Gandhi</h1>
-                <p>Professional Title</p>
-                <p>Short and engaging pitch about yourself.</p>
+                <h1>{{ name }}</h1>
+                <p>{{ title }}</p>
+                <p>{{ pitch }}</p>
             </div>
         </div>
         <div class="contact-info">
-            <p>Email: f20220676@goa.bits-pilani.ac.in</p>
-            <p>Phone Number</p>
+            <p>Email: {{ email }}</p>
+            <p>{{ phone }}</p>
         </div>
         <div class="section">
             <h2>EDUCATION</h2>
             <ul>
-                <li><strong>Study Program</strong><br>Institution/Place of Education</li>
+                {% for edu in education %}
+                <li><strong>{{ edu.program }}</strong><br>{{ edu.institution }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>WORK EXPERIENCE</h2>
             <ul>
-                <li><strong>Title/Position</strong><br>Workplace/Company</li>
+                {% for work in work_experience %}
+                <li><strong>{{ work.position }}</strong><br>{{ work.company }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>SKILLS</h2>
             <ul>
-                <li>Skill</li>
+                {% for skill in skills %}
+                <li>{{ skill }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>PERSONAL PROJECTS</h2>
             <ul>
-                <li>Project Name</li>
+                {% for project in projects %}
+                <li>{{ project }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>ORGANIZATIONS</h2>
             <ul>
-                <li>Organization Name</li>
+                {% for org in organizations %}
+                <li>{{ org }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>CERTIFICATES</h2>
             <ul>
-                <li>Certificate Name</li>
+                {% for cert in certificates %}
+                <li>{{ cert }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>LANGUAGES</h2>
             <ul>
-                <li>Language<br>Full Professional Proficiency</li>
+                {% for lang in languages %}
+                <li>{{ lang.name }}<br>{{ lang.proficiency }}</li>
+                {% endfor %}
             </ul>
         </div>
         <div class="section">
             <h2>INTERESTS</h2>
             <ul>
-                <li>Interest</li>
+                {% for interest in interests %}
+                <li>{{ interest }}</li>
+                {% endfor %}
             </ul>
         </div>
     </div>
