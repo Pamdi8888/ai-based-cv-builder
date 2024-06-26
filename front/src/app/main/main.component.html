@@ -1,0 +1,712 @@
+<div
+  class="container-fluid d-flex justify-content-center align-items-center"
+  id="htmlData"
+>
+
+  <div class="w-100">
+    <form [formGroup]="mainForm" (ngSubmit)="submitForm()">
+      <div class="mt-3" formGroupName="personal">
+        <h5 class="mb-2 btn btn-dark">Personal Details</h5>
+        <div class="d-flex gap-0 row">
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="name"
+              placeholder="Name"
+              [class.is-invalid]="nameField?.invalid && nameField?.touched"
+            />
+            <div *ngIf="nameField?.invalid && nameField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="nameField?.errors?.['required']"
+              >
+                Name is required
+              </small>
+            </div>
+            <div *ngIf="nameField?.invalid && nameField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="nameField?.errors?.['minlength']"
+              >
+                Name must contain minimum 3 letters
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="Email"
+              [class.is-invalid]="emailField?.invalid && emailField?.touched"
+            />
+            <div *ngIf="emailField?.invalid && emailField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="emailField?.errors?.['required']"
+              >
+                Email is required
+              </small>
+            </div>
+            <div *ngIf="emailField?.invalid && emailField?.touched">
+              <small class="text-danger" *ngIf="emailField?.errors?.['email']">
+                Email is not valid
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="tel"
+              class="form-control"
+              formControlName="phone"
+              placeholder="Contact No."
+              [class.is-invalid]="phoneField?.invalid && phoneField?.touched"
+            />
+            <div *ngIf="phoneField?.invalid && phoneField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="phoneField?.errors?.['required']"
+              >
+                Contact number is required
+              </small>
+            </div>
+            <div *ngIf="phoneField?.invalid && phoneField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="phoneField?.errors?.['pattern']"
+              >
+                Contact number is not valid
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="linkedIn"
+              placeholder="LinkedIn"
+              [class.is-invalid]="
+                linkedInField?.invalid && linkedInField?.touched
+              "
+            />
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="mt-3" formGroupName="address">
+        <h5 class="mb-2 btn btn-dark">Address</h5>
+        <div class="d-flex gap-1 row">
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="street"
+              placeholder="Street"
+              [class.is-invalid]="streetField?.invalid && streetField?.touched"
+            />
+            <div *ngIf="streetField?.invalid && streetField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="streetField?.errors?.['maxlength']"
+              >
+                Street must not exceeds 20 characters
+              </small>
+            </div>
+            <div *ngIf="streetField?.invalid && streetField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="streetField?.errors?.['minlength']"
+              >
+                Street is not valid
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-3 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="city"
+              placeholder="city"
+              [class.is-invalid]="cityField?.invalid && cityField?.touched"
+            />
+            <div *ngIf="cityField?.invalid && cityField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="cityField?.errors?.['maxlength']"
+              >
+                City must not exceeds 20 characters
+              </small>
+            </div>
+            <div *ngIf="cityField?.invalid && cityField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="cityField?.errors?.['required']"
+              >
+                City is required
+              </small>
+            </div>
+            <div *ngIf="cityField?.invalid && cityField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="cityField?.errors?.['minlength']"
+              >
+                City is not valid
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="state"
+              placeholder="State"
+              [class.is-invalid]="stateField?.invalid && stateField.touched"
+            />
+            <div *ngIf="stateField?.invalid && stateField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="stateField?.errors?.['maxlength']"
+              >
+                State must not exceeds 20 characters
+              </small>
+            </div>
+            <div *ngIf="stateField?.invalid && stateField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="stateField?.errors?.['required']"
+              >
+                State is required
+              </small>
+            </div>
+            <div *ngIf="stateField?.invalid && stateField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="stateField?.errors?.['minlength']"
+              >
+                State is not valid
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-4 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="country"
+              placeholder="Country"
+              [class.is-invalid]="countryField.invalid && countryField.touched"
+            />
+            <div *ngIf="countryField?.invalid && countryField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="countryField?.errors?.['maxlength']"
+              >
+                Country must not exceeds 20 characters
+              </small>
+            </div>
+            <div *ngIf="countryField?.invalid && countryField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="countryField?.errors?.['required']"
+              >
+                Country is required
+              </small>
+            </div>
+            <div *ngIf="countryField?.invalid && countryField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="countryField?.errors?.['minlength']"
+              >
+                Country is not valid
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-12 col-md-3 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="postal"
+              placeholder="PinCode"
+              [class.is-invalid]="postalField?.invalid && postalField.touched"
+            />
+            <div *ngIf="postalField?.invalid && postalField?.touched">
+              <small
+                class="text-danger"
+                *ngIf="postalField?.errors?.['required']"
+              >
+                Pin code is required
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="mt-2" formGroupName="education">
+        <h5 class="mb-2 btn btn-dark">Education Qualifications</h5>
+        <div class="row" formGroupName="higher">
+          <h6 class="mt-2">Higher Studies</h6>
+          <div class="form-group col-12 col-md-6 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="school"
+              placeholder="School"
+              [class.is-invalid]="hSchool.touched && hSchool.invalid"
+            />
+
+            <div *ngIf="hSchool?.invalid && hSchool?.touched">
+              <small class="text-danger" *ngIf="hSchool?.errors?.['maxlength']">
+                School name must not exceeds 40 characters
+              </small>
+            </div>
+            <div *ngIf="hSchool?.invalid && hSchool?.touched">
+              <small class="text-danger" *ngIf="hSchool?.errors?.['required']">
+                School name is required
+              </small>
+            </div>
+            <div *ngIf="hSchool?.invalid && hSchool?.touched">
+              <small class="text-danger" *ngIf="hSchool?.errors?.['minlength']">
+                School name must have atleast 5 characters.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-6 col-md-3 mt-2">
+            <select
+              formControlName="class"
+              [class.isinvalid]="hClass?.invalid && hClass?.touched"
+            >
+              <option selected>Select Subject</option>
+              <option *ngFor="let i of class">{{ i }}</option>
+            </select>
+            <div *ngIf="hClass?.invalid && hClass?.touched">
+              <small
+                class="text-danger"
+                *ngIf="hClass?.errors?.['required'] || hClass?.errors?.['forbiddenName'] "
+              >
+                Please Select Subject.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-6 col-md-3 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="grades"
+              placeholder="Grades / %"
+              [class.is-invalid]="hGrades.touched && hGrades.invalid"
+            />
+            <div *ngIf="hGrades?.invalid && hGrades?.touched">
+              <small class="text-danger" *ngIf="hGrades?.errors?.['maxlength']">
+                Grades/Percentage must not exceeds 4 characters
+              </small>
+            </div>
+            <div *ngIf="hGrades?.invalid && hGrades?.touched">
+              <small class="text-danger" *ngIf="hGrades?.errors?.['required']">
+                Grades/Percentage is required
+              </small>
+            </div>
+            <div *ngIf="hGrades?.invalid && hGrades?.touched">
+              <small class="text-danger" *ngIf="hGrades?.errors?.['minlength']">
+                Grades/Percentage name must have atleast 1 character.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-8 col-md-4 mt-2">
+            <label class="form-control-label">Year Of Passing </label>
+            <input
+              type="month"
+              class="form-control"
+              formControlName="year"
+              placeholder="Year of Passing"
+              [class.is-invalid]="hYear.invalid && hYear.touched"
+            />
+            <div *ngIf="hYear?.invalid && hYear?.touched">
+              <small class="text-danger" *ngIf="hGrades?.errors?.['required']">
+                Year is required
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row" formGroupName="graduation">
+          <h6 class="mt-2">Graduation</h6>
+          <div class="form-group col-12 col-md-6 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="college"
+              placeholder="College"
+              [class.is-invalid]="gCollege.invalid && gCollege.touched"
+            />
+
+            <div *ngIf="gCollege?.invalid && gCollege?.touched">
+              <small
+                class="text-danger"
+                *ngIf="gCollege?.errors?.['maxlength']"
+              >
+                Name must not exceeds 40 characters
+              </small>
+            </div>
+            <div *ngIf="gCollege?.invalid && gCollege?.touched">
+              <small class="text-danger" *ngIf="gCollege?.errors?.['required']">
+                Name is required
+              </small>
+            </div>
+            <div *ngIf="gCollege?.invalid && gCollege?.touched">
+              <small
+                class="text-danger"
+                *ngIf="gCollege?.errors?.['minlength']"
+              >
+                Name must have atleast 5 characters.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-6 col-md-3 mt-2">
+            <select
+              formControlName="degree"
+              [class.isinvalid]="gDegree?.invalid && gDegree?.touched"
+            >
+              <option selected>Select Degree</option>
+              <option *ngFor="let i of graduate">{{ i }}</option>
+            </select>
+            <div *ngIf="gDegree?.invalid && gDegree?.touched">
+              <small
+                class="text-danger"
+                *ngIf="gDegree?.errors?.['required'] || gDegree?.errors?.['forbiddenName']"
+              >
+                Please Select Degree.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-6 col-md-3 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="grades"
+              placeholder="Grades / %"
+              [class.is-invalid]="gGrades.invalid && gGrades.touched"
+            />
+            <div *ngIf="gGrades?.invalid && gGrades?.touched">
+              <small class="text-danger" *ngIf="gGrades?.errors?.['maxlength']">
+                Grades/Percentage must not exceeds 4 characters
+              </small>
+            </div>
+            <div *ngIf="gGrades?.invalid && gGrades?.touched">
+              <small class="text-danger" *ngIf="gGrades?.errors?.['required']">
+                Grades/Percentage is required
+              </small>
+            </div>
+            <div *ngIf="gGrades?.invalid && gGrades?.touched">
+              <small class="text-danger" *ngIf="gGrades?.errors?.['minlength']">
+                Grades/Percentage name must have atleast 1 character.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-8 col-md-4 mt-2">
+            <label class="form-control-label">Year Of Passing </label>
+            <input
+              type="month"
+              class="form-control"
+              formControlName="year"
+              placeholder="Year"
+              [class.is-invalid]="gYear.touched && gYear.invalid"
+            />
+            <div *ngIf="gYear?.invalid && gYear?.touched">
+              <small class="text-danger" *ngIf="gYear?.errors?.['required']">
+                Year is required
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="row" formGroupName="postGraduation">
+          <h6 class="mt-2">Post Graduation</h6>
+          <div class="form-group col-12 col-md-6 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="college"
+              placeholder="College"
+              [class.is-invalid]="pCollege.touched && pCollege.invalid"
+            />
+            <div *ngIf="pCollege?.invalid && pCollege?.touched">
+              <small
+                class="text-danger"
+                *ngIf="pCollege?.errors?.['maxlength']"
+              >
+                Name must not exceeds 40 characters
+              </small>
+            </div>
+            <div *ngIf="pCollege?.invalid && pCollege?.touched">
+              <small class="text-danger" *ngIf="pCollege?.errors?.['required']">
+                Name is required
+              </small>
+            </div>
+            <div *ngIf="pCollege?.invalid && pCollege?.touched">
+              <small
+                class="text-danger"
+                *ngIf="pCollege?.errors?.['minlength']"
+              >
+                Name must have atleast 5 characters.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-6 col-md-3 mt-2">
+            <select
+              formControlName="degree"
+              [class.isinvalid]="pDegree?.invalid && pDegree?.touched"
+            >
+              <option selected>Select Degree</option>
+              <option *ngFor="let i of postGraduate">{{ i }}</option>
+            </select>
+            <div *ngIf="pDegree?.invalid && pDegree?.touched">
+              <small
+                class="text-danger"
+                *ngIf="pDegree?.errors?.['required'] || gDegree?.errors?.['forbiddenName']"
+              >
+                Please Select Degree.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-6 col-md-3 mt-2">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="grades"
+              placeholder="Grades / %"
+              [class.is-invalid]="pGrades.invalid && pGrades.touched"
+            />
+            <div *ngIf="pGrades?.invalid && pGrades?.touched">
+              <small class="text-danger" *ngIf="pGrades?.errors?.['maxlength']">
+                Grades/Percentage must not exceeds 4 characters
+              </small>
+            </div>
+            <div *ngIf="pGrades?.invalid && pGrades?.touched">
+              <small class="text-danger" *ngIf="pGrades?.errors?.['required']">
+                Grades/Percentage is required
+              </small>
+            </div>
+            <div *ngIf="pGrades?.invalid && pGrades?.touched">
+              <small class="text-danger" *ngIf="pGrades?.errors?.['minlength']">
+                Grades/Percentage name must have atleast 1 character.
+              </small>
+            </div>
+          </div>
+          <div class="form-group col-8 col-md-4 mt-2">
+            <label class="form-control-label">Year Of Passing </label>
+            <input
+              type="month"
+              class="form-control"
+              formControlName="year"
+              placeholder="Year"
+              [class.is-invalid]="pYear.touched && pYear.invalid"
+            />
+            <div *ngIf="pYear?.invalid && pYear?.touched">
+              <small class="text-danger" *ngIf="pYear?.errors?.['required']">
+                Year is required
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <div class="mt-2" formArrayName="experience">
+        <div class="d-flex gap-4">
+          <h5 class="mb-2 btn btn-dark">Experience</h5>
+          <span class="btn btn-primary mb-2" (click)="addExperience()"
+            >Add More</span
+          >
+        </div>
+        <div *ngFor="let item of myExperience.controls; let i = index">
+          <div class="row" [formGroupName]="i">
+            <div class="form-group col-12 col-md-6 mt-2">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="position"
+                placeholder="Position"
+              />
+            </div>
+            <div class="form-group col-12 col-md-6 mt-2">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="orgnization"
+                placeholder="Orgnization"
+              />
+            </div>
+
+            <div class="form-group col-6 col-md-6 mt-2">
+              <label class="form-control-label">Joined</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="joined"
+              />
+            </div>
+
+            <div
+              class="form-group col-6 col-md-6 mt-2"
+              [class.d-none]="item.value.current"
+            >
+              <label class="form-control-label">Worked Till</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="workedTill"
+                placeholder="xzojkl"
+              />
+            </div>
+            <div
+              class="form-group col-6 col-md-6 mt-2"
+              [class.d-none]="item.value.workedTill"
+            >
+              <div class="d-flex gap-1 present">
+                <input
+                  type="checkbox"
+                  class="form-check"
+                  formControlName="current"
+                />
+                <label class="form-control-label">Currently Working </label>
+              </div>
+            </div>
+            <label class="mb-1">Responsbilites</label>
+            <div class="form-group col-12 col-md-6 mt-2">
+              <textarea
+                type="text"
+                class="form-control mb-2"
+                formControlName="responsblities1"
+                rows="5"
+              ></textarea>
+            </div>
+            <div class="form-group col-12 col-md-6 mt-2">
+              <textarea
+                type="text"
+
+                class="form-control mb-2"
+                formControlName="responsblities2"
+                rows="5"
+              ></textarea>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+      <div class="mt-2" formArrayName="skills">
+        <div class="mb-2 d-flex gap-4">
+          <h5 class="mb-2 btn btn-dark">Skills</h5>
+          <span class="btn btn-primary mb-2" (click)="addSkill()"
+            >Add More</span
+          >
+        </div>
+        <div class="row">
+          <div
+            class="col-12 col-md-4 mb-2"
+            *ngFor="let skills of mySkills.controls; let i = index"
+          >
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
+        </div>
+      </div>
+      <hr />
+
+
+
+      <div class="mt-2" formArrayName="techSkills">
+        <div class="mb-2 d-flex gap-4">
+          <h5 class="mb-2 btn btn-dark">Technical Skills</h5>
+          <span class="btn btn-primary mb-2" (click)="addTechSkills()"
+            >Add More</span
+          >
+        </div>
+        <div class="row">
+          <div
+            class="col-12 col-md-4 mb-2"
+            *ngFor="let tech of myTechSkills.controls; let i = index"
+          >
+          
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
+          <div class="form-group col-12 col-md-6 mt-2">
+            <textarea
+              type="text"
+              class="form-control mb-2"
+              formControlName="ProjectDescription1"
+              rows="5"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+
+
+      <div class="mt-2" formArrayName="Hobbies">
+        <div class="mb-2 d-flex gap-4">
+          <h5 class="mb-2 btn btn-dark">Hobbies</h5>
+          <span class="btn btn-primary mb-2" (click)="addHobbies()"
+            >Add More</span
+          >
+        </div>
+        <div class="row">
+          <div
+            class="col-12 col-md-4 mb-2"
+            *ngFor="let hob of myHobbies.controls; let i = index"
+          >
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <div class="mt-2" formArrayName="languages">
+        <div class="mb-2 d-flex gap-4">
+          <h5 class="mb-2 btn btn-dark">Languages</h5>
+          <span class="btn btn-primary mb-2" (click)="addLangs()"
+            >Add More</span
+          >
+        </div>
+        <div class="row">
+          <div
+            class="col-12 col-md-4 mb-2"
+            *ngFor="let hob of myLangs.controls; let i = index"
+          >
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-2" formArrayName="refrences">
+        <div class="mb-2 d-flex gap-4">
+          <h5 class="mb-2 btn btn-dark">Refrence</h5>
+          <span class="btn btn-primary mb-2" (click)="addRefs()">Add More</span>
+        </div>
+        <div class="row">
+          <div
+            class="col-12 col-md-4 mb-2"
+            *ngFor="let hob of myRefs.controls; let i = index"
+          >
+            <input type="text" class="form-control" [formControlName]="i" />
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div
+        class="d-flex justify-content-center mt-2 align align-items-center flex-column text-center"
+      >
+        <small class="text-danger" *ngIf="mainForm.invalid"
+          >Please fill all details to enable download button .</small
+        >
+        <br />
+        <button
+          class="btn btn-success m-3"
+          [disabled]="mainForm.invalid"
+          type="submit"
+        >
+          <img src="../../assets/downloadPdf.png" class="download" />
+          Download
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- [disabled]="mainForm.invalid" -->
