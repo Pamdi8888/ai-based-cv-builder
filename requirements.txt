@@ -1,0 +1,6 @@
+flask
+flask-sqlalchemy
+sqlclient
+flask-wtf
+transformers
+torch
