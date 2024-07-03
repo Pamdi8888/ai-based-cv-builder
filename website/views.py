@@ -1,9 +1,16 @@
-from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, json
 from .llm.query import enhance_text
 from .models import *
+from werkzeug.utils import secure_filename
+import os
 
 views = Blueprint('views', __name__)
 
+UPLOAD_FOLDER = 'website/static/uploads'
+ALLOWED_EXTENSIONS = {'pdf', 'docx', 'jpg', 'jpeg', 'docx', 'png', 'txt'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @views.route('/', methods=['GET', 'POST'])
 def home():
@@ -23,7 +30,6 @@ def home():
             flash('Any field cannot be blank', category='error')
     return render_template('home.html')
 
-
 @views.route('/enhance', methods=['POST'])
 def enhance():
     data = request.get_json()
@@ -33,11 +39,22 @@ def enhance():
 
 @views.route('/user/add_full', methods=['POST'])
 def add_full_user():
-    data = request.get_json()
+    if 'data' not in request.form or 'profile_photo' not in request.files:
+        return jsonify({'error': 'Missing form data or files'}), 400
+
+    data = json.loads(request.form['data'])
 
     existing_user = User.query.filter_by(mail=data['mail']).first()
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 409
+
+    profile_photo = request.files['profile_photo']
+    if profile_photo and allowed_file(profile_photo.filename):
+        profile_photo_filename = secure_filename(profile_photo.filename)
+        profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
+        profile_photo.save(profile_photo_path)
+    else:
+        return jsonify({'error': 'Profile photo type not allowed'}), 400
 
     user = User(
         full_name=data['full_name'],
@@ -53,8 +70,9 @@ def add_full_user():
         skills=data.get('skills'),
         transaction_id=data.get('transaction_id'),
         prof_summary=data.get('prof_summary'),
-        password=data.get('password'),
-        template_id=data.get('template_id')
+        password=data['password'],
+        template_id=data.get('template_id'),
+        profile_photo=profile_photo_path
     )
     db.session.add(user)
     db.session.commit()
@@ -194,14 +212,63 @@ def add_full_user():
         db.session.add(extra_curricular)
 
     for document_data in data.get('documents', []):
-        document = Document(
-            name=document_data['name'],
-            category=document_data.get('category'),
-            description=document_data.get('description'),
-            user_id=user.id
-        )
-        db.session.add(document)
+        if 'document_file' in request.files:
+            document_file = request.files['document_file']
+            if document_file and allowed_file(document_file.filename):
+                document_filename = secure_filename(document_file.filename)
+                document_file_path = os.path.join(UPLOAD_FOLDER, document_filename)
+                document_file.save(document_file_path)
+            else:
+                return jsonify({'error': 'Document file type not allowed'}), 400
+
+            document = Document(
+                name=document_data['name'],
+                category=document_data['category'],
+                description=document_data['description'],
+                is_authorized=document_data['is_authorized'],
+                file_path=document_file_path,
+                user_id=user.id
+            )
+            db.session.add(document)
+        else:
+            return jsonify({'error': 'Missing document file'}), 400
 
     db.session.commit()
 
     return jsonify({'message': 'User created successfully'}), 201
+
+@views.route('/user/upload_profile_photo', methods=['POST'])
+def upload_profile_photo():
+    if 'profile_photo' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['profile_photo']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 201
+
+    return jsonify({'error': 'File type not allowed'}), 400
+
+@views.route('/user/upload_document', methods=['POST'])
+def upload_document():
+    if 'document' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+
+    file = request.files['document']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(UPLOAD_FOLDER, filename)
+        file.save(file_path)
+        return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 201
+
+    return jsonify({'error': 'File type not allowed'}), 400
+
+
