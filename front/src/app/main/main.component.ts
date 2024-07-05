@@ -1,5 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, Validators, FormGroup } from '@angular/forms';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { subjectValidator } from 'src/validators/subject-validator';
+import { degreeValidator } from 'src/validators/degree-validator';
+import { requiredFieldValidator } from 'src/validators/required-field-validator';
+import { dateValidator } from 'src/validators/date-validator';
+import { emailValidator } from 'src/validators/email-validator';
+import { passwordValidator } from 'src/validators/password-validator';
+import { templateIdValidator } from 'src/validators/template-id-validator';
+import { graduationYearValidator } from 'src/validators/graduation-year-validator';
+import {HttpClient} from '@angular/common/http';
+
 
 @Component({
   selector: 'app-main',
@@ -10,7 +22,7 @@ export class MainComponent implements OnInit {
 
   mainForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.mainForm = this.fb.group({
       full_name: ['', [Validators.required, Validators.minLength(3)]],
       date_of_birth: ['', [Validators.required]],
@@ -23,10 +35,10 @@ export class MainComponent implements OnInit {
       additional_info: [''],
       minor_course_details: [''],
       skills: [''],
-      transaction_id: [''],
+      // transaction_id: [''],
       prof_summary: [''],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      template_id: [1, [Validators.required]],
+      // password: ['', [Validators.required, Validators.minLength(6)]],
+      // template_id: [1, [Validators.required]],
       languages: this.fb.array([this.createLanguage()]),
       education: this.fb.array([this.createEducation()]),
       projects: this.fb.array([this.createProject()]),
@@ -68,7 +80,7 @@ export class MainComponent implements OnInit {
   addPositionOfResponsibility() { this.positionsOfResponsibilityFormArray.push(this.createPositionOfResponsibility()); }
   addExtraCurricular() { this.extraCurricularsFormArray.push(this.createExtraCurricular()); }
   addDocument() { this.documentsFormArray.push(this.createDocument()); }
-  
+
   // Methods to create form groups
   createLanguage(): FormGroup {
     return this.fb.group({
@@ -80,7 +92,7 @@ export class MainComponent implements OnInit {
   createEducation(): FormGroup {
     return this.fb.group({
       grade_year: [''],
-      grad_year: ['', [Validators.required]],
+      grad_year: [''],
       percentage_cgpa: [''],
       specialization: [''],
       institution: ['']
@@ -167,11 +179,23 @@ export class MainComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.mainForm.valid) {
-      console.log('Form Data:', this.mainForm.value);
-      // Process the form data as per the backend requirements
-    } else {
-      console.log('Form is invalid');
+        if (this.mainForm.valid) {
+            const formData = this.mainForm.value;
+            console.log('Form Data:', formData);
+            this.http.post('http://127.0.0.1:5000/static', formData, {responseType: 'text'})
+                .subscribe((response) => {
+                    console.log('Form Submitted Successfully:');
+                    const newWindow = window.open();
+                    if (newWindow) {
+                        newWindow.document.write(response);
+                        newWindow.document.close();
+                    } else {
+                        console.error('Failed to open new window');
+                    }
+                }, (error) => {
+                    console.error('Error submitting form:', error);
+                }
+            );
+        } else { console.log('Form is invalid')}
     }
-  }
 }

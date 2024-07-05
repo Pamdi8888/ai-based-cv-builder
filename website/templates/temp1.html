@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name }}'s Resume</title>
+    <title>{{ full_name }}'s Resume</title>
     <style>
         @page {
             size: A4;
@@ -83,20 +83,20 @@
         <div class="header">
             <img src="{{ url_for('static', filename='profile-picture.png') }}" alt="Profile Picture">
             <div class="details">
-                <h1>{{ name }}</h1>
-                <p>{{ title }}</p>
-                <p>{{ pitch }}</p>
+                <h1>{{ full_name }}</h1>
+{#                <p>{{ title }}</p>#}
+{#                <p>{{ pitch }}</p>#}
             </div>
         </div>
         <div class="contact-info">
             <p>Email: {{ email }}</p>
-            <p>{{ phone }}</p>
+            <p>Mobile: {{ phone }}</p>
         </div>
         <div class="section">
             <h2>EDUCATION</h2>
             <ul>
                 {% for edu in education %}
-                <li><strong>{{ edu.program }}</strong><br>{{ edu.institution }}</li>
+                <li><strong>{{ edu.specialization }}</strong><br>{{ edu.institution }}</li>
                 {% endfor %}
             </ul>
         </div>

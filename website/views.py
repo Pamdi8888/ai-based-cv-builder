@@ -3,32 +3,57 @@ from .llm.query import enhance_text
 from .models import *
 from werkzeug.utils import secure_filename
 import os
+from . import dataMgmt
 
 views = Blueprint('views', __name__)
 
 UPLOAD_FOLDER = 'website/static/uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'docx', 'jpg', 'jpeg', 'docx', 'png', 'txt'}
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@views.route('/', methods=['GET', 'POST'])
+
+# @views.route('/', methods=['GET', 'POST'])
+# def home():
+#     if request.method == 'POST':
+#         raw_data = request.form
+#         # name = request.form.get('name')
+#         if len(raw_data['name']) * len(raw_data['email']) * len(raw_data['organization']) > 0:
+#             print(raw_data)
+#             data = {
+#                 'name': raw_data['name'],
+#                 'email': raw_data['email'],
+#                 'organizations': raw_data['organization']
+#             }
+#             return render_template('temp1.html', **data)
+#             # return render_template('home.html')
+#         else:
+#             flash('Any field cannot be blank', category='error')
+#     return render_template('home.html')
+
+@views.route('/static', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        raw_data = request.form
-        # name = request.form.get('name')
-        if len(raw_data['name']) * len(raw_data['email']) * len(raw_data['organization']) > 0:
-            print(raw_data)
-            data = {
-                'name': raw_data['name'],
-                'email': raw_data['email'],
-                'organizations': raw_data['organization']
-            }
-            return render_template('temp1.html', **data)
-            # return render_template('home.html')
-        else:
-            flash('Any field cannot be blank', category='error')
-    return render_template('home.html')
+        raw_data = request.get_json()
+        print(raw_data)
+        data = dataMgmt.DataManagement(raw_data)
+        # print("trying")
+        return render_template('temp2.html', **data)
+
+    return render_template('index.html')
+
+
+@views.route('/')
+def root():
+    return redirect('/static')
+
+
+@views.route('/static/')
+def root_static():
+    return redirect('/static')
+
 
 @views.route('/enhance', methods=['POST'])
 def enhance():
@@ -36,6 +61,7 @@ def enhance():
     prompt = data['prompt']
     enhanced_text = enhance_text(prompt)
     return jsonify({'enhanced_text': enhanced_text})
+
 
 @views.route('/user/add_full', methods=['POST'])
 def add_full_user():
@@ -237,6 +263,7 @@ def add_full_user():
 
     return jsonify({'message': 'User created successfully'}), 201
 
+
 @views.route('/user/upload_profile_photo', methods=['POST'])
 def upload_profile_photo():
     if 'profile_photo' not in request.files:
@@ -254,6 +281,7 @@ def upload_profile_photo():
 
     return jsonify({'error': 'File type not allowed'}), 400
 
+
 @views.route('/user/upload_document', methods=['POST'])
 def upload_document():
     if 'document' not in request.files:
@@ -270,5 +298,3 @@ def upload_document():
         return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 201
 
     return jsonify({'error': 'File type not allowed'}), 400
-
-

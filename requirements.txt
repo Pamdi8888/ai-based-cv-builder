@@ -1,6 +1,6 @@
 flask
 flask-sqlalchemy
-sqlclient
+mysqlclient
 flask-wtf
 transformers
 torch

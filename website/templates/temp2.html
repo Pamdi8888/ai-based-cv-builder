@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CV Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header img {
+            width: 90px;
+        }
+
+        .section {
+            border: 1px solid #000;
+            margin: 5px 0;
+            padding: 0;
+        }
+
+        .section-title {
+            background-color: #cfcbcb;
+            padding: 5px;
+        }
+
+        .section-inside {
+            padding: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 5px;
+            text-align: left;
+        }
+
+        .th td {
+            background-color: #eeeeee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div>
+            <img src="{{ url_for('static', filename='profile-picture.png') }}" alt="Profile Photo">
+        </div>
+        <div>
+            <h2>{{ full_name }}</h2>
+            <strong>Course:</strong> {{ course }}<br>
+            <strong>Email:</strong> {{ mail }}<br>
+            <strong>Mobile:</strong> {{ mobile }}<br>
+            <strong>CGPA:</strong> {{ cgpa }}
+        </div>
+        <div>
+            <img src="{{ college_logo }}" alt="College Logo">
+        </div>
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>ACADEMIC DETAILS</strong></div>
+        <table>
+            <thead>
+            <tr>
+                <th>COURSE</th>
+                <th>INSTITUTE/COLLEGE</th>
+                <th>BOARD/UNIVERSITY</th>
+                <th>SCORE</th>
+                <th>YEAR</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for edu in education %}
+                <tr>
+                    <td>{{ edu.specialization }}</td>
+                    <td>{{ edu.institution }}</td>
+                    <td>{{ edu.board }}</td>
+                    <td>{{ edu.percentage_cgpa }}</td>
+                    <td>{{ edu.grad_year }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div style="border: 1px solid black; margin: 1px; margin-top: 5px">
+        <table style="width:100%;table-layout: fixed;">
+            <tbody>
+            <tr style="border-bottom:1px solid black;">
+                <td style="width: 150px; border-right: 1px solid black; padding: 5px; background-color:#cfcbcb;">
+                    <strong>SUBJECTS / ELECTIVES</strong><!---->
+                </td>
+                <td>
+                    {{ courses }}
+                </td>
+            </tr>
+            <tr style="border-bottom:1px solid black;">
+                <td style="width: 150px; border-right: 1px solid black; padding: 5px; background-color:#cfcbcb;">
+                    <strong> TECHNICAL PROFICIENCY </strong><!---->
+                </td>
+                <td>
+                    {{ skills }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>WORK EXPERIENCE</strong></div>
+        {% for work in work_experience %}
+            <div class="section-inside">
+                <strong>{{ work.role }} - {{ work.organization }}</strong>
+                <br>{{ work.description }}
+                <br>{{ work.cause }}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>PROJECTS</strong></div>
+        {% for proj in projects %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ proj.title }} - {{ proj.domain }}</strong>
+                    <strong>{{ proj.duration }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in proj.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                    <a href="{{ proj.url }}"> Link </a>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>POSITION OF RESPONSIBILITY</strong></div>
+        {% for por in positions_of_responsibility %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ por.role }} - {{ por.organization }}</strong>
+                    <strong>{{ por.duration }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in por.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>EXTRA CURRICULAR ACTIVITIES</strong></div>
+        {% for ec in extra_curriculars %}
+            <div class="section-inside">
+                <strong>{{ ec.name }} - {{ ec.category }}</strong>
+                <ul style="padding-left: 15px">
+                    {% for desc in ec.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>AWARDS AND RECOGNITIONS</strong></div>
+        {% for acc in accomplishments %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ acc.name }} - {{ acc.organization }}</strong>
+                    <strong>{{ acc.date }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in acc.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>CERTIFICATIONS</strong></div>
+        <table>
+            <thead class="th">
+            <tr>
+                <td><strong>CERTIFICATION</strong></td>
+                <td><strong>CERTIFYING AUTHORITY</strong></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for cert in certifications %}
+                <tr>
+                    <td>{{ cert.name }}</td>
+                    <td>{{ cert.organization }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>COMPETITIONS</strong></div>
+        {% for comp in competitions %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ comp.name }} - {{ comp.organization }}</strong>
+                    <strong>{{ comp.date }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in comp.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>CONFERENCES & WORKSHOPS</strong></div>
+        {% for caw in conferences_and_workshops %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ caw.name }} - {{ caw.organization }}</strong>
+                    <strong>{{ caw.date }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in caw.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>TEST SCORES</strong></div>
+        <table>
+            <thead class="th">
+            <tr>
+                <td><strong>TEST NAME</strong></td>
+                <td><strong>DATE OF EXAM</strong></td>
+                <td><strong>SCORE</strong></td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for test in tests %}
+                <tr>
+                    <td>{{ test.name }}</td>
+                    <td>{{ test.date }}</td>
+                    <td>{{ test.score }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>PATENTS AND PUBLICATIONS</strong></div>
+        {% for pap in patents_and_publications %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ pap.name }} - {{ pap.organization }}</strong>
+                    <strong>{{ pap.date }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in pap.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>SCHOLARSHIPS</strong></div>
+        {% for scho in scholarships %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ scho.name }} - {{ scho.organization }}</strong>
+                    <strong>{{ scho.date }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in scho.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>VOLUNTEER EXPERIENCE</strong></div>
+        {% for vol in volunteer_activities %}
+            <div class="section-inside">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong>{{ vol.role }} - {{ vol.organization }}</strong>
+                    <strong>{{ vol.date }}</strong>
+                </div>
+                <ul style="padding-left: 15px">
+                    {% for desc in vol.description.split('\n') %}
+                        <li>{{ desc }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="section">
+        <div class="section-title"><strong>LANGUAGES KNOWN</strong></div>
+        <div class="section-inside">
+            {{ languages | map(attribute='language') | join(', ') }}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
