@@ -2,36 +2,20 @@ from flask import Blueprint, render_template, request, flash, jsonify, redirect,
 from .llm.query import enhance_text
 from .models import *
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash
 import os
 from . import dataMgmt
 
 views = Blueprint('views', __name__)
 
 UPLOAD_FOLDER = 'website/static/uploads'
-ALLOWED_EXTENSIONS = {'pdf', 'docx', 'jpg', 'jpeg', 'docx', 'png', 'txt'}
-
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-# @views.route('/', methods=['GET', 'POST'])
-# def home():
-#     if request.method == 'POST':
-#         raw_data = request.form
-#         # name = request.form.get('name')
-#         if len(raw_data['name']) * len(raw_data['email']) * len(raw_data['organization']) > 0:
-#             print(raw_data)
-#             data = {
-#                 'name': raw_data['name'],
-#                 'email': raw_data['email'],
-#                 'organizations': raw_data['organization']
-#             }
-#             return render_template('temp1.html', **data)
-#             # return render_template('home.html')
-#         else:
-#             flash('Any field cannot be blank', category='error')
-#     return render_template('home.html')
+def password_hash(password):
+    return generate_password_hash(password)
 
 @views.route('/static', methods=['GET', 'POST'])
 def home():
@@ -39,21 +23,17 @@ def home():
         raw_data = request.get_json()
         print(raw_data)
         data = dataMgmt.DataManagement(raw_data)
-        # print("trying")
         return render_template('temp2.html', **data)
 
     return render_template('index.html')
-
 
 @views.route('/')
 def root():
     return redirect('/static')
 
-
 @views.route('/static/')
 def root_static():
     return redirect('/static')
-
 
 @views.route('/enhance', methods=['POST'])
 def enhance():
@@ -61,7 +41,6 @@ def enhance():
     prompt = data['prompt']
     enhanced_text = enhance_text(prompt)
     return jsonify({'enhanced_text': enhanced_text})
-
 
 @views.route('/user/add_full', methods=['POST'])
 def add_full_user():
@@ -86,17 +65,16 @@ def add_full_user():
         full_name=data['full_name'],
         date_of_birth=data['date_of_birth'],
         mail=data['mail'],
-        marital_status=data.get('marital_status'),
-        hobbies=data.get('hobbies'),
         dream_sector1=data.get('dream_sector1'),
         dream_sector2=data.get('dream_sector2'),
         career_plans=data.get('career_plans'),
         additional_info=data.get('additional_info'),
         minor_course_details=data.get('minor_course_details'),
+        subjects=data.get('subjects'),
         skills=data.get('skills'),
         transaction_id=data.get('transaction_id'),
         prof_summary=data.get('prof_summary'),
-        password=data['password'],
+        password=password_hash(data['password']),
         template_id=data.get('template_id'),
         profile_photo=profile_photo_path
     )
@@ -119,7 +97,7 @@ def add_full_user():
             db.session.commit()
 
         education = Education(
-            grade_year=education_data['grade_year'],
+            board_university=education_data['board_university'],
             grad_year=education_data['grad_year'],
             percentage_cgpa=education_data['percentage_cgpa'],
             specialization=education_data['specialization'],
@@ -156,28 +134,12 @@ def add_full_user():
 
         work_experience = WorkExperience(
             role=work_experience_data['role'],
-            cause=work_experience_data.get('cause'),
             description=work_experience_data.get('description'),
+            duration=work_experience_data.get('duration'),
             organization_id=organization.id,
             user_id=user.id
         )
         db.session.add(work_experience)
-
-    for internship_data in data.get('internships', []):
-        organization = Organization.query.filter_by(name=internship_data['organization']).first()
-        if not organization:
-            organization = Organization(name=internship_data['organization'])
-            db.session.add(organization)
-            db.session.commit()
-
-        internship = Internship(
-            role=internship_data['role'],
-            cause=internship_data.get('cause'),
-            description=internship_data.get('description'),
-            organization_id=organization.id,
-            user_id=user.id
-        )
-        db.session.add(internship)
 
     for volunteer_activity_data in data.get('volunteer_activities', []):
         organization = Organization.query.filter_by(name=volunteer_activity_data['organization']).first()
@@ -188,8 +150,8 @@ def add_full_user():
 
         volunteer_activity = VolunteerActivity(
             role=volunteer_activity_data['role'],
-            cause=volunteer_activity_data.get('cause'),
             description=volunteer_activity_data.get('description'),
+            date=volunteer_activity_data.get('date'),
             organization_id=organization.id,
             user_id=user.id
         )
@@ -206,7 +168,6 @@ def add_full_user():
             name=accomplishment_data['name'],
             description=accomplishment_data.get('description'),
             date=accomplishment_data.get('date'),
-            type=accomplishment_data.get('type'),
             organization_id=organization.id,
             user_id=user.id
         )
@@ -221,8 +182,8 @@ def add_full_user():
 
         position_of_responsibility = PositionOfResponsibility(
             role=position_of_responsibility_data['role'],
-            cause=position_of_responsibility_data.get('cause'),
             description=position_of_responsibility_data.get('description'),
+            duration=position_of_responsibility_data.get('duration'),
             organization_id=organization.id,
             user_id=user.id
         )
@@ -237,64 +198,95 @@ def add_full_user():
         )
         db.session.add(extra_curricular)
 
-    for document_data in data.get('documents', []):
-        if 'document_file' in request.files:
-            document_file = request.files['document_file']
-            if document_file and allowed_file(document_file.filename):
-                document_filename = secure_filename(document_file.filename)
-                document_file_path = os.path.join(UPLOAD_FOLDER, document_filename)
-                document_file.save(document_file_path)
-            else:
-                return jsonify({'error': 'Document file type not allowed'}), 400
+    for certification_data in data.get('certifications', []):
+        organization = Organization.query.filter_by(name=certification_data['organization']).first()
+        if not organization:
+            organization = Organization(name=certification_data['organization'])
+            db.session.add(organization)
+            db.session.commit()
 
-            document = Document(
-                name=document_data['name'],
-                category=document_data['category'],
-                description=document_data['description'],
-                is_authorized=document_data['is_authorized'],
-                file_path=document_file_path,
-                user_id=user.id
-            )
-            db.session.add(document)
-        else:
-            return jsonify({'error': 'Missing document file'}), 400
+        certification = Certification(
+            name=certification_data['name'],
+            date=certification_data.get('date'),
+            organization_id=organization.id,
+            user_id=user.id
+        )
+        db.session.add(certification)
+
+    for competition_data in data.get('competitions', []):
+        organization = Organization.query.filter_by(name=competition_data['organization']).first()
+        if not organization:
+            organization = Organization(name=competition_data['organization'])
+            db.session.add(organization)
+            db.session.commit()
+
+        competition = Competition(
+            name=competition_data['name'],
+            date=competition_data.get('date'),
+            position=competition_data.get('position'),
+            organization_id=organization.id,
+            user_id=user.id
+        )
+        db.session.add(competition)
+
+    for conference_workshop_data in data.get('conferences_workshops', []):
+        organization = Organization.query.filter_by(name=conference_workshop_data['organization']).first()
+        if not organization:
+            organization = Organization(name=conference_workshop_data['organization'])
+            db.session.add(organization)
+            db.session.commit()
+
+        conference_workshop = ConferenceWorkshop(
+            name=conference_workshop_data['name'],
+            date=conference_workshop_data.get('date'),
+            description=conference_workshop_data.get('description'),
+            organization_id=organization.id,
+            user_id=user.id
+        )
+        db.session.add(conference_workshop)
+
+    for test_score_data in data.get('test_scores', []):
+
+        test_score = TestScore(
+            name=test_score_data['name'],
+            date=test_score_data.get('date'),
+            score=test_score_data.get('score'),
+            user_id=user.id
+        )
+        db.session.add(test_score)
+
+    for patent_publication_data in data.get('patents_publications', []):
+        organization = Organization.query.filter_by(name=patent_publication_data['organization']).first()
+        if not organization:
+            organization = Organization(name=patent_publication_data['organization'])
+            db.session.add(organization)
+            db.session.commit()
+
+        patent_publication = PatentPublication(
+            name=patent_publication_data['name'],
+            date=patent_publication_data.get('date'),
+            description=patent_publication_data.get('description'),
+            organization_id=organization.id,
+            user_id=user.id
+        )
+        db.session.add(patent_publication)
+
+    for scholarship_data in data.get('scholarships', []):
+        organization = Organization.query.filter_by(name=scholarship_data['organization']).first()
+        if not organization:
+            organization = Organization(name=scholarship_data['organization'])
+            db.session.add(organization)
+            db.session.commit()
+
+        scholarship = Scholarship(
+            name=scholarship_data['name'],
+            date=scholarship_data.get('date'),
+            description=scholarship_data.get('description'),
+            organization_id=organization.id,
+            user_id=user.id
+        )
+        db.session.add(scholarship)
 
     db.session.commit()
 
     return jsonify({'message': 'User created successfully'}), 201
-
-
-@views.route('/user/upload_profile_photo', methods=['POST'])
-def upload_profile_photo():
-    if 'profile_photo' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-
-    file = request.files['profile_photo']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(UPLOAD_FOLDER, filename)
-        file.save(file_path)
-        return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 201
-
-    return jsonify({'error': 'File type not allowed'}), 400
-
-
-@views.route('/user/upload_document', methods=['POST'])
-def upload_document():
-    if 'document' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
-
-    file = request.files['document']
-    if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
-
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file_path = os.path.join(UPLOAD_FOLDER, filename)
-        file.save(file_path)
-        return jsonify({'message': 'File uploaded successfully', 'file_path': file_path}), 201
-
-    return jsonify({'error': 'File type not allowed'}), 400
