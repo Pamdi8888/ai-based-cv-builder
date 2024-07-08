@@ -4,3 +4,4 @@ mysqlclient
 flask-wtf
 transformers
 torch
+flask-cors

@@ -125,7 +125,6 @@ def DataManagement(raw_data):
         'accomplishments': raw_data['accomplishments'],
         'positions_of_responsibility': raw_data['positions_of_responsibility'],
         'extra_curriculars': raw_data['extra_curriculars'],
-        'documents': raw_data['documents']
     }
 
     return data
