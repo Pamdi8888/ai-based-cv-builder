@@ -4,13 +4,12 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { subjectValidator } from 'src/validators/subject-validator';
 import { degreeValidator } from 'src/validators/degree-validator';
-import { requiredFieldValidator } from 'src/validators/required-field-validator';
+import { requiredFieldValidator } from 'src/validators/required-field.validator';
 import { dateValidator } from 'src/validators/date-validator';
 import { emailValidator } from 'src/validators/email-validator';
 import { passwordValidator } from 'src/validators/password-validator';
 import { templateIdValidator } from 'src/validators/template-id-validator';
 import { graduationYearValidator } from 'src/validators/graduation-year-validator';
-import {HttpClient} from '@angular/common/http';
 
 
 @Component({
@@ -21,8 +20,9 @@ import {HttpClient} from '@angular/common/http';
 export class MainComponent implements OnInit {
 
   mainForm: FormGroup;
+  selectedFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder) {
     this.mainForm = this.fb.group({
       full_name: ['', [Validators.required, Validators.minLength(3)]],
       date_of_birth: ['', [Validators.required]],
@@ -35,10 +35,10 @@ export class MainComponent implements OnInit {
       additional_info: [''],
       minor_course_details: [''],
       skills: [''],
-      // transaction_id: [''],
+      transaction_id: [''],
       prof_summary: [''],
-      // password: ['', [Validators.required, Validators.minLength(6)]],
-      // template_id: [1, [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      template_id: [1, [Validators.required]],
       languages: this.fb.array([this.createLanguage()]),
       education: this.fb.array([this.createEducation()]),
       projects: this.fb.array([this.createProject()]),
@@ -49,7 +49,14 @@ export class MainComponent implements OnInit {
       accomplishments: this.fb.array([this.createAccomplishment()]),
       positions_of_responsibility: this.fb.array([this.createPositionOfResponsibility()]),
       extra_curriculars: this.fb.array([this.createExtraCurricular()]),
-      documents: this.fb.array([this.createDocument()])
+    //  documents: this.fb.array([this.createDocument()])
+      certifications: this.fb.array([]),
+      competitions: this.fb.array([]),
+      conferences_workshops: this.fb.array([]),
+      test_scores: this.fb.array([]),
+      patents_publications: this.fb.array([]),
+      scholarships: this.fb.array([]),
+      photograph: [''] 
     });
   }
 
@@ -66,7 +73,13 @@ export class MainComponent implements OnInit {
   get accomplishmentsFormArray() { return this.mainForm.get('accomplishments') as FormArray; }
   get positionsOfResponsibilityFormArray() { return this.mainForm.get('positions_of_responsibility') as FormArray; }
   get extraCurricularsFormArray() { return this.mainForm.get('extra_curriculars') as FormArray; }
-  get documentsFormArray() { return this.mainForm.get('documents') as FormArray; }
+  //get documentsFormArray() { return this.mainForm.get('documents') as FormArray; }
+  get certificationsFormArray() { return this.mainForm.get('certifications') as FormArray; }
+  get competitionsFormArray() { return this.mainForm.get('competitions') as FormArray; }
+  get conferencesWorkshopsFormArray() { return this.mainForm.get('conferences_workshops') as FormArray; }
+  get testScoresFormArray() { return this.mainForm.get('test_scores') as FormArray; }
+  get patentsPublicationsFormArray() { return this.mainForm.get('patents_publications') as FormArray; }
+  get scholarshipsFormArray() { return this.mainForm.get('scholarships') as FormArray; }
 
   // Methods to add new form groups to form arrays
   addLanguage() { this.languagesFormArray.push(this.createLanguage()); }
@@ -79,8 +92,14 @@ export class MainComponent implements OnInit {
   addAccomplishment() { this.accomplishmentsFormArray.push(this.createAccomplishment()); }
   addPositionOfResponsibility() { this.positionsOfResponsibilityFormArray.push(this.createPositionOfResponsibility()); }
   addExtraCurricular() { this.extraCurricularsFormArray.push(this.createExtraCurricular()); }
-  addDocument() { this.documentsFormArray.push(this.createDocument()); }
-
+  //addDocument() { this.documentsFormArray.push(this.createDocument()); }
+  addCertification() { this.certificationsFormArray.push(this.createCertification()); }
+  addCompetition() { this.competitionsFormArray.push(this.createCompetition()); }
+  addConferenceWorkshop() { this.conferencesWorkshopsFormArray.push(this.createConferenceWorkshop()); }
+  addTestScore() { this.testScoresFormArray.push(this.createTestScore()); }
+  addPatentPublication() { this.patentsPublicationsFormArray.push(this.createPatentPublication()); }
+  addScholarship() { this.scholarshipsFormArray.push(this.createScholarship()); }
+    
   // Methods to create form groups
   createLanguage(): FormGroup {
     return this.fb.group({
@@ -92,7 +111,7 @@ export class MainComponent implements OnInit {
   createEducation(): FormGroup {
     return this.fb.group({
       grade_year: [''],
-      grad_year: [''],
+      grad_year: ['', [Validators.required]],
       percentage_cgpa: [''],
       specialization: [''],
       institution: ['']
@@ -148,7 +167,7 @@ export class MainComponent implements OnInit {
       name: [''],
       description: [''],
       date: [''],
-      type: [''],
+    //  type: [''],
       organization: ['']
     });
   }
@@ -170,32 +189,100 @@ export class MainComponent implements OnInit {
     });
   }
 
-  createDocument(): FormGroup {
+  // createDocument(): FormGroup {
+  //   return this.fb.group({
+  //     name: [''],
+  //     category: [''],
+  //     description: ['']
+  //   });
+  // }
+
+  createCertification(): FormGroup {
     return this.fb.group({
       name: [''],
-      category: [''],
-      description: ['']
+      date: [''],
+      organization: ['']
+    });
+  }
+  
+  createCompetition(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      date: [''],
+      position: [''],
+      organization: ['']
+    });
+  }
+  
+  createConferenceWorkshop(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      date: [''],
+      description: [''],
+      organization: ['']
+    });
+  }
+  
+  createTestScore(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      date: [''],
+      score: ['']
+    });
+  }
+  
+  createPatentPublication(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      date: [''],
+      description: [''],
+      organization: ['']
+    });
+  }
+  
+  createScholarship(): FormGroup {
+    return this.fb.group({
+      name: [''],
+      date: [''],
+      description: [''],
+      organization: ['']
     });
   }
 
-  onSubmit(): void {
-        if (this.mainForm.valid) {
-            const formData = this.mainForm.value;
-            console.log('Form Data:', formData);
-            this.http.post('http://127.0.0.1:5000/static', formData, {responseType: 'text'})
-                .subscribe((response) => {
-                    console.log('Form Submitted Successfully:');
-                    const newWindow = window.open();
-                    if (newWindow) {
-                        newWindow.document.write(response);
-                        newWindow.document.close();
-                    } else {
-                        console.error('Failed to open new window');
-                    }
-                }, (error) => {
-                    console.error('Error submitting form:', error);
-                }
-            );
-        } else { console.log('Form is invalid')}
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
+      this.selectedFile = file;
+      this.mainForm.patchValue({
+        photograph: file.name
+      });
+    } else {
+      alert('Please select a valid .jpg or .jpeg file.');
+      this.selectedFile = null;
+      this.mainForm.patchValue({
+        photograph: ''
+      });
     }
+  }  
+
+  onSubmit(): void {
+    if (this.mainForm.valid) {
+      console.log('Form Data:', this.mainForm.value);
+      if (this.selectedFile) {
+        // Here you would typically send the file to your server
+        console.log('Selected File:', this.selectedFile);
+        // You can use FormData to send both form data and file
+        const formData = new FormData();
+        formData.append('photograph', this.selectedFile, this.selectedFile.name);
+        // Append other form data as needed
+        for (const key in this.mainForm.value) {
+          formData.append(key, this.mainForm.value[key]);
+        }
+        // Send formData to your server
+        console.log('FormData:', formData);
+      }
+    } else {
+      console.log('Form is invalid');
+    }
+  }
 }
