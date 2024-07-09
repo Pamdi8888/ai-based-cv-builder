@@ -27,17 +27,34 @@
             </div>
           </div>
         </div>
-  
+
+        <!-- Photograph Section -->
+        <div class="mt-3">
+          <h5 class="mb-2 btn btn-dark">Photograph</h5>
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="input-group">
+                <input type="file" class="form-control" (change)="onFileSelected($event)" accept=".jpg,.jpeg" id="photographInput">
+                <label class="input-group-text" for="photographInput">Upload</label>
+              </div>
+            </div>
+            <div class="col-12 col-md-6">
+              <input type="text" class="form-control" [value]="mainForm.get('photograph')?.value" readonly placeholder="No file chosen" [class.is-invalid]="mainForm.get('photograph')?.invalid && mainForm.get('photograph')?.touched">
+            </div>
+          </div>
+          <small class="text-muted">Please upload a .jpg or .jpeg file.</small>
+        </div>
+
         <!-- Additional Details Section -->
         <div class="mt-3">
           <h5 class="mb-2 btn btn-dark">Additional Details</h5>
           <div class="d-flex gap-0 row">
-            <div class="form-group col-12 col-md-4 mt-2">
+            <!-- <div class="form-group col-12 col-md-4 mt-2">
               <input type="text" class="form-control" formControlName="marital_status" placeholder="Marital Status">
-            </div>
-            <div class="form-group col-12 col-md-4 mt-2">
+            </div> -->
+            <!-- <div class="form-group col-12 col-md-4 mt-2">
               <input type="text" class="form-control" formControlName="hobbies" placeholder="Hobbies">
-            </div>
+            </div> -->
             <div class="form-group col-12 col-md-4 mt-2">
               <input type="text" class="form-control" formControlName="dream_sector1" placeholder="Dream Sector 1">
             </div>
@@ -128,7 +145,7 @@
   </div>
 
   <!-- Documents Section -->
-  <div class="mt-3">
+  <!-- <div class="mt-3">
     <h5 class="mb-2 btn btn-dark">Documents</h5>
     <div formArrayName="documents">
       <div *ngFor="let doc of documentsFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
@@ -144,7 +161,7 @@
       </div>
     </div>
     <button type="button" class="btn btn-secondary mt-2" (click)="addDocument()">Add Document</button>
-  </div>
+  </div> -->
 
   <!-- Projects Section -->
 <div class="mt-3">
@@ -239,8 +256,11 @@
       <div class="form-group col-6 col-md-3">
         <input type="text" class="form-control" formControlName="role" placeholder="Role">
       </div>
-      <div class="form-group col-6 col-md-3">
+      <!-- <div class="form-group col-6 col-md-3">
         <input type="text" class="form-control" formControlName="cause" placeholder="Cause">
+      </div> -->
+      <div class="form-group col-6 col-md-3">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
       </div>
       <div class="form-group col-6 col-md-3">
         <input type="text" class="form-control" formControlName="organization" placeholder="Organization">
@@ -261,9 +281,9 @@
       <div class="form-group col-6 col-md-3">
         <input type="text" class="form-control" formControlName="name" placeholder="Name">
       </div>
-      <div class="form-group col-6 col-md-3">
+      <!-- <div class="form-group col-6 col-md-3">
         <input type="text" class="form-control" formControlName="type" placeholder="Type">
-      </div>
+      </div> -->
       <div class="form-group col-6 col-md-3">
         <input type="date" class="form-control" formControlName="date" placeholder="Date">
       </div>
@@ -299,6 +319,133 @@
   </div>
   <button type="button" class="btn btn-secondary mt-2" (click)="addPositionOfResponsibility()">Add Position of Responsibility</button>
 </div>
+
+<!-- Certifications Section -->
+<div class="mt-3">
+  <h5 class="mb-2 btn btn-dark">Certifications</h5>
+  <div formArrayName="certifications">
+    <div *ngFor="let cert of certificationsFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
+      <div class="form-group col-6 col-md-4">
+        <input type="text" class="form-control" formControlName="name" placeholder="Certification Name">
+      </div>
+      <div class="form-group col-6 col-md-4">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
+      </div>
+      <div class="form-group col-6 col-md-4">
+        <input type="text" class="form-control" formControlName="organization" placeholder="Organization">
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mt-2" (click)="addCertification()">Add Certification</button>
+</div>
+
+<!-- Competitions Section -->
+<div class="mt-3">
+  <h5 class="mb-2 btn btn-dark">Competitions</h5>
+  <div formArrayName="competitions">
+    <div *ngFor="let comp of competitionsFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="name" placeholder="Competition Name">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="position" placeholder="Position">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="organization" placeholder="Organization">
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mt-2" (click)="addCompetition()">Add Competition</button>
+</div>
+
+<!-- Conferences and Workshops Section -->
+<div class="mt-3">
+  <h5 class="mb-2 btn btn-dark">Conferences and Workshops</h5>
+  <div formArrayName="conferences_workshops">
+    <div *ngFor="let conf of conferencesWorkshopsFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="name" placeholder="Name">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="organization" placeholder="Organization">
+      </div>
+      <div class="form-group col-12">
+        <textarea class="form-control" formControlName="description" placeholder="Description"></textarea>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mt-2" (click)="addConferenceWorkshop()">Add Conference/Workshop</button>
+</div>
+
+<!-- Test Scores Section -->
+<div class="mt-3">
+  <h5 class="mb-2 btn btn-dark">Test Scores</h5>
+  <div formArrayName="test_scores">
+    <div *ngFor="let score of testScoresFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
+      <div class="form-group col-6 col-md-4">
+        <input type="text" class="form-control" formControlName="name" placeholder="Test Name">
+      </div>
+      <div class="form-group col-6 col-md-4">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
+      </div>
+      <div class="form-group col-6 col-md-4">
+        <input type="text" class="form-control" formControlName="score" placeholder="Score">
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mt-2" (click)="addTestScore()">Add Test Score</button>
+</div>
+
+<!-- Patents and Publications Section -->
+<div class="mt-3">
+  <h5 class="mb-2 btn btn-dark">Patents and Publications</h5>
+  <div formArrayName="patents_publications">
+    <div *ngFor="let patent of patentsPublicationsFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="name" placeholder="Name">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="organization" placeholder="Organization">
+      </div>
+      <div class="form-group col-12">
+        <textarea class="form-control" formControlName="description" placeholder="Description"></textarea>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mt-2" (click)="addPatentPublication()">Add Patent/Publication</button>
+</div>
+
+<!-- Scholarships Section -->
+<div class="mt-3">
+  <h5 class="mb-2 btn btn-dark">Scholarships</h5>
+  <div formArrayName="scholarships">
+    <div *ngFor="let scholarship of scholarshipsFormArray.controls; let i = index" [formGroupName]="i" class="row mt-2">
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="name" placeholder="Scholarship Name">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="date" class="form-control" formControlName="date" placeholder="Date">
+      </div>
+      <div class="form-group col-6 col-md-3">
+        <input type="text" class="form-control" formControlName="organization" placeholder="Organization">
+      </div>
+      <div class="form-group col-12">
+        <textarea class="form-control" formControlName="description" placeholder="Description"></textarea>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="btn btn-secondary mt-2" (click)="addScholarship()">Add Scholarship</button>
+</div>
+
 
   <div class="d-grid mt-4">
     <button type="submit" class="btn btn-primary">Submit</button>
