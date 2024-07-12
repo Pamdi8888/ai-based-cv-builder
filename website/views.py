@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
 import os
 from . import dataMgmt
+from .llm.query import get_mistral as llm_service
+from .llm.template import query_template
 
 views = Blueprint('views', __name__)
 
@@ -41,6 +43,17 @@ def enhance():
     prompt = data['prompt']
     enhanced_text = enhance_text(prompt)
     return jsonify({'enhanced_text': enhanced_text})
+
+
+
+@views.route("/message", methods=["POST"])
+def chat():
+    data = request.get_json()
+    user_message = data["query"]
+    formatted_query = query_template.template.format(query=user_message)
+    result = llm_service(formatted_query)
+    return jsonify({"output": result})
+
 
 @views.route('/user/add_full', methods=['POST'])
 def add_full_user():
