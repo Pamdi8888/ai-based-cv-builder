@@ -386,6 +386,7 @@ export class MainComponent implements OnInit {
                             newWindow.document.write(response);
                             newWindow.document.close();
                         } else {
+                            // console.log(response);
                             console.error('Failed to open new window');
                         }
                     }, (error) => {

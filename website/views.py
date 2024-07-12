@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, json
-from .llm.query import enhance_text
+# from .llm.query import enhance_text
 from .models import *
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash
@@ -13,37 +13,50 @@ views = Blueprint('views', __name__)
 UPLOAD_FOLDER = 'website/static/uploads'
 ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 def password_hash(password):
     return generate_password_hash(password)
+
 
 @views.route('/static', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         raw_data = request.get_json()
-        print(raw_data)
-        data = dataMgmt.DataManagement(raw_data)
-        return render_template('temp2.html', **data)
-
+        print(f"Raw Data: {raw_data}")
+        try:
+            formatted_query = query_template.template.format(query=raw_data)
+            ai_raw_data = json.loads(llm_service(formatted_query))
+            print(f"AI Raw Data: {ai_raw_data}")
+            ai_data = dataMgmt.DataManagement(ai_raw_data)
+            print("AI Generated CV Rendered")
+            return render_template('temp2.html', **ai_data)
+        except:
+            data = dataMgmt.DataManagement(raw_data)
+            print("User Data based CV Rendered")
+            return render_template("temp2.html", **data)
     return render_template('index.html')
+
 
 @views.route('/')
 def root():
     return redirect('/static')
 
+
 @views.route('/static/')
 def root_static():
     return redirect('/static')
 
-@views.route('/enhance', methods=['POST'])
-def enhance():
-    data = request.get_json()
-    prompt = data['prompt']
-    enhanced_text = enhance_text(prompt)
-    return jsonify({'enhanced_text': enhanced_text})
 
+# @views.route('/enhance', methods=['POST'])
+# def enhance():
+#     data = request.get_json()
+#     prompt = data['prompt']
+#     enhanced_text = enhance_text(prompt)
+#     return jsonify({'enhanced_text': enhanced_text})
 
 
 @views.route("/message", methods=["POST"])
@@ -259,7 +272,6 @@ def add_full_user():
         db.session.add(conference_workshop)
 
     for test_score_data in data.get('test_scores', []):
-
         test_score = TestScore(
             name=test_score_data['name'],
             date=test_score_data.get('date'),
