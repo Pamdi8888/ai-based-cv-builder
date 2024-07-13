@@ -19,6 +19,7 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey('templates.id'))
     profile_photo = db.Column(db.String(255))
+    organziation_photo = db.Column(db.String(255))
 
     template = db.relationship("Template")
     languages = db.relationship("Language", back_populates="user", cascade="all, delete-orphan")

@@ -79,6 +79,12 @@ def add_full_user():
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 409
 
+    organization_photo = request.files['organization_photo']
+    if(organization_photo and allowed_file(profile_photo.filename)):
+        organization_photo_filename = secure_filename(organization_photo.filename)
+        organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
+        organization_photo.save(organization_photo_path)
+
     profile_photo = request.files['profile_photo']
     if profile_photo and allowed_file(profile_photo.filename):
         profile_photo_filename = secure_filename(profile_photo.filename)
