@@ -349,38 +349,45 @@ export class MainComponent implements OnInit {
         const file = event.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
             this.selectedFile = file;
-            this.mainForm.patchValue({
-                photograph: file.name
-            });
+
         } else {
             alert('Please select a valid .jpg or .jpeg file.');
             this.selectedFile = null;
-            this.mainForm.patchValue({
-                photograph: ''
-            });
+
         }
     }
 
     onSubmit(): void {
         if (this.mainForm.valid) {
-            console.log('Form Data:', this.mainForm.value);
-            // You can use FormData to send both form data and file
-            const formData = this.mainForm.value;
-            // if (this.selectedFile) {
-            //     // Here you would typically send the file to your server
-            //     console.log('Selected File:', this.selectedFile);
-            //     formData.append('photograph', this.selectedFile, this.selectedFile.name);
-            // }
-            // Append other form data as needed
-            // for (const key in this.mainForm.value) {
-            //     formData.append(key, this.mainForm.value[key]);
-            // }
+            const formData = new FormData();
+
+            // Append form data
+            for (const key in this.mainForm.value) {
+                formData.append(key, this.mainForm.value[key]);
+            }
+
+            // Append the selected file
+            if (this.selectedFile) {
+                formData.append('photograph', this.selectedFile, this.selectedFile.name);
+            }
+
+            console.log('FormData:', formData);
+
+            // Send formData to database
+            this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
+                .subscribe(
+                    (response) => {
+                        console.log('Form Submitted Successfully:', response);
+                    },
+                    (error) => {
+                        console.error('Error updating Database:', error);
+                    }
+                );
 
             // Send formData to your server
-            console.log('FormData:', formData);
             this.http.post('http://127.0.0.1:5000/static', formData, {responseType: 'text'})
                 .subscribe((response) => {
-                        console.log('Form Submitted Successfully:');
+                        console.log('Form Submitted');
                         const newWindow = window.open();
                         if (newWindow) {
                             newWindow.document.write(response);

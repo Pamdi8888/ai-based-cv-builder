@@ -7,3 +7,4 @@ torch
 flask-cors
 mistralai
 python-dotenv
+werkzeug
