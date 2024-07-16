@@ -397,58 +397,6 @@ export class MainComponent implements OnInit {
         }
     }
 
-//     onSubmit(): void {
-//         if (this.mainForm.valid) {
-//             const formData = new FormData();
-
-//             // Append form data
-//             for (const key in this.mainForm.value) {
-//                 formData.append(key, this.mainForm.value[key]);
-//             }
-
-//             // Append the selected file
-//             if (this.selectedFile) {
-//                 formData.append('photograph', this.selectedFile, this.selectedFile.name);
-//             }
-
-//     // Append the selected organization file
-//     if (this.selectedOrganizationFile) {
-//         formData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
-//       }
-//             console.log('FormData:', formData);
-
-//             // Send formData to database
-//             this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
-//                 .subscribe(
-//                     (response) => {
-//                         console.log('Form Submitted Successfully:', response);
-//                     },
-//                     (error) => {
-//                         console.error('Error updating Database:', error);
-//                     }
-//                 );
-
-//             // Send formData to your server
-//             this.http.post('http://127.0.0.1:5000/static', formData, {responseType: 'text'})
-//                 .subscribe((response) => {
-//                         console.log('Form Submitted');
-//                         const newWindow = window.open();
-//                         if (newWindow) {
-//                             newWindow.document.write(response);
-//                             newWindow.document.close();
-//                         } else {
-//                             // console.log(response);
-//                             console.error('Failed to open new window');
-//                         }
-//                     }, (error) => {
-//                         console.error('Error submitting form:', error);
-//                     }
-//                 );
-//         } else {
-//             console.log('Form is invalid');
-//         }
-//     }
-// }
 
     onSubmit(): void {
         if (this.mainForm.valid) {
@@ -502,33 +450,4 @@ export class MainComponent implements OnInit {
         //         }
         //     );
     }
-
-
-// sendPhotos(photoFormData: FormData, orgPhotoFormData: FormData): void {
-//     // Send photograph
-//     if (photoFormData.has('photograph')) {
-//         this.http.post('http://127.0.0.1:5000/upload_photo', photoFormData, {responseType: 'text'})
-//             .subscribe(
-//                 (response) => {
-//                     console.log('Photograph uploaded successfully:', response);
-//                 },
-//                 (error) => {
-//                     console.error('Error uploading photograph:', error);
-//                 }
-//             );
-//     }
-//
-//     // Send organization photograph
-//     if (orgPhotoFormData.has('organization_photograph')) {
-//         this.http.post('http://127.0.0.1:5000/upload_org_photo', orgPhotoFormData, {responseType: 'text'})
-//             .subscribe(
-//                 (response) => {
-//                     console.log('Organization photograph uploaded successfully:', response);
-//                 },
-//                 (error) => {
-//                     console.error('Error uploading organization photograph:', error);
-//                 }
-//             );
-//     }
-// }
 }
