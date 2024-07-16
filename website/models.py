@@ -123,7 +123,7 @@ class VolunteerActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     role = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
-    date = db.Column(db.Date)  # New field for date
+    date = db.Column(db.String(255)) 
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     
@@ -137,7 +137,7 @@ class Accomplishment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
     
@@ -188,7 +188,7 @@ class Certification(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
     
@@ -201,7 +201,7 @@ class Competition(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     position = db.Column(db.String(255))
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
@@ -215,7 +215,7 @@ class ConferenceWorkshop(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     description = db.Column(db.Text)
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
@@ -229,7 +229,7 @@ class TestScore(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     score = db.Column(db.String(50))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
     
@@ -241,7 +241,7 @@ class PatentPublication(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     description = db.Column(db.Text)
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
@@ -255,7 +255,7 @@ class Scholarship(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
-    date = db.Column(db.Date)
+    date = db.Column(db.String(255))
     description = db.Column(db.Text)
     organization_id = db.Column(db.Integer, db.ForeignKey('organization.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
