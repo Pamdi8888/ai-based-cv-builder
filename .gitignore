@@ -3,6 +3,6 @@ website/llm/__pycache__/
 website/static/uploads
 .env
 .DS_Store
-website/front/.angular
-website/front/node_modules
-website/front/dist
+front/.angular
+front/node_modules
+front/dist
