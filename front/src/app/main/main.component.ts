@@ -403,7 +403,7 @@ export class MainComponent implements OnInit {
         }
 
         // Send formData to your server
-        // this.http.post('http://127.0.0.1:5000/main', formData, {responseType: 'text'})
+        // this.http.post('http://127.0.0.1:5000/static/main', formData, {responseType: 'text'})
         //     .subscribe((response) => {
         //             console.log('Form Submitted');
         //             const newWindow = window.open();

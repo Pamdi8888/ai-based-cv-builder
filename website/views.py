@@ -22,7 +22,7 @@ def password_hash(password):
     return generate_password_hash(password)
 
 
-@views.route('/main', methods=['GET', 'POST'])
+@views.route('/static/main', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
         raw_data = request.get_json()['data']
@@ -41,14 +41,14 @@ def home():
     return render_template('index.html')
 
 
-@views.route('/')
+@views.route('/main')
 def root():
-    return redirect('/main')
+    return redirect('/static/main')
 
 
-@views.route('/static/')
+@views.route('/static/main/')
 def root_static():
-    return redirect('/main')
+    return redirect('/static/main')
 
 
 # @views.route('/enhance', methods=['POST'])
