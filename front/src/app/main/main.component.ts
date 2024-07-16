@@ -10,6 +10,7 @@ import {emailValidator} from 'src/validators/email-validator';
 import {passwordValidator} from 'src/validators/password-validator';
 import {templateIdValidator} from 'src/validators/template-id-validator';
 import {graduationYearValidator} from 'src/validators/graduation-year-validator';
+import { formatValidator } from 'src/validators/format-validator';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -22,6 +23,7 @@ export class MainComponent implements OnInit {
 
     mainForm: FormGroup;
     selectedFile: File | null = null;
+    selectedOrganizationFile: File | null = null;
 
     constructor(private fb: FormBuilder, private http: HttpClient) {
         this.mainForm = this.fb.group({
@@ -57,7 +59,10 @@ export class MainComponent implements OnInit {
             test_scores: this.fb.array([this.createTestScore()]),
             patents_publications: this.fb.array([this.createPatentPublication()]),
             scholarships: this.fb.array([this.createScholarship()]),
-            photograph: ['']
+            format: ['', [Validators.required, formatValidator()]],
+            photograph: [''],
+            organization_photograph : [''],
+            subjects: this.fb.array([this.createSubject()]),
         });
     }
 
@@ -129,6 +134,9 @@ export class MainComponent implements OnInit {
     get scholarshipsFormArray() {
         return this.mainForm.get('scholarships') as FormArray;
     }
+    get subjectsFormArray() {
+        return this.mainForm.get('subjects') as FormArray;
+    }
 
     // Methods to add new form groups to form arrays
     addLanguage() {
@@ -137,6 +145,10 @@ export class MainComponent implements OnInit {
 
     addEducation() {
         this.educationFormArray.push(this.createEducation());
+    }
+    
+    addSubject() {
+        this.subjectsFormArray.push(this.createSubject());
     }
 
     addProject() {
@@ -252,7 +264,7 @@ export class MainComponent implements OnInit {
     createVolunteerActivity(): FormGroup {
         return this.fb.group({
             role: [''],
-            cause: [''],
+            date: [''],
             description: [''],
             organization: ['']
         });
@@ -345,6 +357,12 @@ export class MainComponent implements OnInit {
         });
     }
 
+    createSubject(): FormGroup {
+        return this.fb.group({
+          subject: ['']
+        });
+    }
+
     onFileSelected(event: any): void {
         const file = event.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
@@ -356,6 +374,16 @@ export class MainComponent implements OnInit {
 
         }
     }
+
+    onOrganizationFileSelected(event: any): void {
+        const file = event.target.files[0];
+        if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
+          this.selectedOrganizationFile = file;
+        } else {
+          alert('Please select a valid .jpg or .jpeg file for the organization image.');
+          this.selectedOrganizationFile = null;
+        }
+      }
 
     onSubmit(): void {
         if (this.mainForm.valid) {
@@ -371,6 +399,10 @@ export class MainComponent implements OnInit {
                 formData.append('photograph', this.selectedFile, this.selectedFile.name);
             }
 
+    // Append the selected organization file
+    if (this.selectedOrganizationFile) {
+        formData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
+      }
             console.log('FormData:', formData);
 
             // Send formData to database
