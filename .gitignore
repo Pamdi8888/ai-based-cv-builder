@@ -6,3 +6,8 @@ website/static/uploads
 front/.angular
 front/node_modules
 front/dist
+website/static/main.bc9d9066f3887299.js
+website/static/polyfills.584ec677a588846d.js
+website/static/runtime.1eee1f7200dfe592.js
+website/static/styles.e9f90c405bd7d114.css
+website/templates/index.html
