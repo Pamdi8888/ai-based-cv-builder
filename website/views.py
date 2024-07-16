@@ -108,7 +108,8 @@ def add_full_user():
         skills=data.get('skills'),
         transaction_id=data.get('transaction_id'),
         prof_summary=data.get('prof_summary'),
-        password=password_hash(data['password']),
+        # password=password_hash(data['password']),
+        password='dummy_password',
         template_id=data.get('template_id'),
         profile_photo=profile_photo_path,
         organization_photo=organization_photo_path
