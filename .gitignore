@@ -5,3 +5,4 @@ website/static/uploads
 .DS_Store
 website/front/.angular
 website/front/node_modules
+website/front/dist
