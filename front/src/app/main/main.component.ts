@@ -10,7 +10,7 @@ import {emailValidator} from 'src/validators/email-validator';
 import {passwordValidator} from 'src/validators/password-validator';
 import {templateIdValidator} from 'src/validators/template-id-validator';
 import {graduationYearValidator} from 'src/validators/graduation-year-validator';
-import { formatValidator } from 'src/validators/format-validator';
+import {formatValidator} from 'src/validators/format-validator';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -39,30 +39,24 @@ export class MainComponent implements OnInit {
             subjects: this.fb.array([this.createSubject()]),
             transaction_id: [''],
             prof_summary: [''],
-           // password: ['', [Validators.required, Validators.minLength(6)]],
-           // template_id: [1, [Validators.required]],
+            // password: ['', [Validators.required, Validators.minLength(6)]],
+            // template_id: [1, [Validators.required]],
             format: ['', [Validators.required, formatValidator()]],
-
             languages: this.fb.array([this.createLanguage()]),
             education: this.fb.array([this.createEducation()]),
             projects: this.fb.array([this.createProject()]),
             social_accounts: this.fb.array([this.createSocialAccount()]),
             work_experience: this.fb.array([this.createWorkExperience()]),
-            //internships: this.fb.array([this.createInternship()]),
             volunteer_activities: this.fb.array([this.createVolunteerActivity()]),
             accomplishments: this.fb.array([this.createAccomplishment()]),
             positions_of_responsibility: this.fb.array([this.createPositionOfResponsibility()]),
             extra_curriculars: this.fb.array([this.createExtraCurricular()]),
-            //  documents: this.fb.array([this.createDocument()])
             certifications: this.fb.array([this.createCertification()]),
             competitions: this.fb.array([this.createCompetition()]),
             conferences_workshops: this.fb.array([this.createConferenceWorkshop()]),
             test_scores: this.fb.array([this.createTestScore()]),
             patents_publications: this.fb.array([this.createPatentPublication()]),
-            scholarships: this.fb.array([this.createScholarship()]),
-            photograph: [''],
-            organization_photograph : [''],
-            
+            scholarships: this.fb.array([this.createScholarship()])
         });
     }
 
@@ -90,10 +84,6 @@ export class MainComponent implements OnInit {
         return this.mainForm.get('work_experience') as FormArray;
     }
 
-    // get internshipsFormArray() {
-    //     return this.mainForm.get('internships') as FormArray;
-    // }
-
     get volunteerActivitiesFormArray() {
         return this.mainForm.get('volunteer_activities') as FormArray;
     }
@@ -110,7 +100,6 @@ export class MainComponent implements OnInit {
         return this.mainForm.get('extra_curriculars') as FormArray;
     }
 
-    //get documentsFormArray() { return this.mainForm.get('documents') as FormArray; }
     get certificationsFormArray() {
         return this.mainForm.get('certifications') as FormArray;
     }
@@ -134,9 +123,11 @@ export class MainComponent implements OnInit {
     get scholarshipsFormArray() {
         return this.mainForm.get('scholarships') as FormArray;
     }
+
     get subjectsFormArray() {
         return this.mainForm.get('subjects') as FormArray;
     }
+
     get skillsFormArray() {
         return this.mainForm.get('skills') as FormArray;
     }
@@ -149,7 +140,7 @@ export class MainComponent implements OnInit {
     addEducation() {
         this.educationFormArray.push(this.createEducation());
     }
-    
+
     addSubject() {
         this.subjectsFormArray.push(this.createSubject());
     }
@@ -157,6 +148,7 @@ export class MainComponent implements OnInit {
     addSkill() {
         this.skillsFormArray.push(this.createSkill());
     }
+
     addProject() {
         this.projectsFormArray.push(this.createProject());
     }
@@ -168,10 +160,6 @@ export class MainComponent implements OnInit {
     addWorkExperience() {
         this.workExperienceFormArray.push(this.createWorkExperience());
     }
-
-    // addInternship() {
-    //     this.internshipsFormArray.push(this.createInternship());
-    // }
 
     addVolunteerActivity() {
         this.volunteerActivitiesFormArray.push(this.createVolunteerActivity());
@@ -189,7 +177,6 @@ export class MainComponent implements OnInit {
         this.extraCurricularsFormArray.push(this.createExtraCurricular());
     }
 
-    //addDocument() { this.documentsFormArray.push(this.createDocument()); }
     addCertification() {
         this.certificationsFormArray.push(this.createCertification());
     }
@@ -227,7 +214,8 @@ export class MainComponent implements OnInit {
             grad_year: [''],
             percentage_cgpa: [''],
             specialization: [''],
-            institution: ['']
+            institution: [''],
+            board_university: ['']
         });
     }
 
@@ -251,20 +239,11 @@ export class MainComponent implements OnInit {
     createWorkExperience(): FormGroup {
         return this.fb.group({
             role: [''],
-            duration:[''],
+            duration: [''],
             description: [''],
             organization: ['']
         });
     }
-
-    // createInternship(): FormGroup {
-    //     return this.fb.group({
-    //         role: [''],
-    //         cause: [''],
-    //         description: [''],
-    //         organization: ['']
-    //     });
-    // }
 
     createVolunteerActivity(): FormGroup {
         return this.fb.group({
@@ -300,14 +279,6 @@ export class MainComponent implements OnInit {
             description: ['']
         });
     }
-
-    // createDocument(): FormGroup {
-    //   return this.fb.group({
-    //     name: [''],
-    //     category: [''],
-    //     description: ['']
-    //   });
-    // }
 
     createCertification(): FormGroup {
         return this.fb.group({
@@ -363,22 +334,21 @@ export class MainComponent implements OnInit {
 
     createSubject(): FormGroup {
         return this.fb.group({
-          subject: ['']
+            subject: ['']
         });
     }
 
     createSkill(): FormGroup {
         return this.fb.group({
-          skill: ['']
+            skill: ['']
         });
-      }
-    
+    }
+
 
     onFileSelected(event: any): void {
         const file = event.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
             this.selectedFile = file;
-
         } else {
             alert('Please select a valid .jpg or .jpeg file.');
             this.selectedFile = null;
@@ -389,136 +359,64 @@ export class MainComponent implements OnInit {
     onOrganizationFileSelected(event: any): void {
         const file = event.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
-          this.selectedOrganizationFile = file;
+            this.selectedOrganizationFile = file;
         } else {
-          alert('Please select a valid .jpg or .jpeg file for the organization image.');
-          this.selectedOrganizationFile = null;
+            alert('Please select a valid .jpg or .jpeg file for the organization image.');
+            this.selectedOrganizationFile = null;
         }
-      }
+    }
 
-//     onSubmit(): void {
-//         if (this.mainForm.valid) {
-//             const formData = new FormData();
 
-//             // Append form data
-//             for (const key in this.mainForm.value) {
-//                 formData.append(key, this.mainForm.value[key]);
-//             }
+    onSubmit(): void {
+        if (this.mainForm.valid) {
+            const formData = new FormData();
+            //
+            console.log(this.mainForm.value);
+            // Append form data
+            formData.append('data', JSON.stringify(this.mainForm.value));
 
-//             // Append the selected file
-//             if (this.selectedFile) {
-//                 formData.append('photograph', this.selectedFile, this.selectedFile.name);
-//             }
-
-//     // Append the selected organization file
-//     if (this.selectedOrganizationFile) {
-//         formData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
-//       }
-//             console.log('FormData:', formData);
-
-//             // Send formData to database
-//             this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
-//                 .subscribe(
-//                     (response) => {
-//                         console.log('Form Submitted Successfully:', response);
-//                     },
-//                     (error) => {
-//                         console.error('Error updating Database:', error);
-//                     }
-//                 );
-
-//             // Send formData to your server
-//             this.http.post('http://127.0.0.1:5000/static', formData, {responseType: 'text'})
-//                 .subscribe((response) => {
-//                         console.log('Form Submitted');
-//                         const newWindow = window.open();
-//                         if (newWindow) {
-//                             newWindow.document.write(response);
-//                             newWindow.document.close();
-//                         } else {
-//                             // console.log(response);
-//                             console.error('Failed to open new window');
-//                         }
-//                     }, (error) => {
-//                         console.error('Error submitting form:', error);
-//                     }
-//                 );
-//         } else {
-//             console.log('Form is invalid');
-//         }
-//     }
-// }
-
-onSubmit(): void {
-    if (this.mainForm.valid) {
-        const formData = new FormData();
-        const photoFormData = new FormData();
-        const orgPhotoFormData = new FormData();
-
-        // Append form data
-        for (const key in this.mainForm.value) {
-            if (key !== 'photograph' && key !== 'organization_photograph') {
-                formData.append(key, this.mainForm.value[key]);
+            // Append the selected file for photograph
+            if (this.selectedFile) {
+                formData.append('photograph', this.selectedFile, this.selectedFile.name);
             }
+
+            // Append the selected organization file
+            if (this.selectedOrganizationFile) {
+                formData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
+            }
+
+            // Send formData to database
+            this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
+                .subscribe(
+                    (response) => {
+                        console.log('Form Submitted Successfully:', response);
+
+                        // After successful form submission, send the photos
+                        // this.sendPhotos(photoFormData, orgPhotoFormData);
+                    },
+                    (error) => {
+                        console.error('Error updating Database:', error);
+                    }
+                );
+        } else {
+            console.log('Form is invalid');
         }
 
-        // Append the selected file for photograph
-        if (this.selectedFile) {
-            photoFormData.append('photograph', this.selectedFile, this.selectedFile.name);
-        }
-
-        // Append the selected organization file
-        if (this.selectedOrganizationFile) {
-            orgPhotoFormData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
-        }
-
-        console.log('FormData:', formData);
-        console.log('PhotoFormData:', photoFormData);
-        console.log('OrgPhotoFormData:', orgPhotoFormData);
-
-        // Send formData to database
-        this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
-            .subscribe(
-                (response) => {
-                    console.log('Form Submitted Successfully:', response);
-                    
-                    // After successful form submission, send the photos
-                    this.sendPhotos(photoFormData, orgPhotoFormData);
-                },
-                (error) => {
-                    console.error('Error updating Database:', error);
-                }
-            );
-    } else {
-        console.log('Form is invalid');
+        // Send formData to your server
+        // this.http.post('http://127.0.0.1:5000/main', formData, {responseType: 'text'})
+        //     .subscribe((response) => {
+        //             console.log('Form Submitted');
+        //             const newWindow = window.open();
+        //             if (newWindow) {
+        //                 newWindow.document.write(response);
+        //                 newWindow.document.close();
+        //             } else {
+        //                 // console.log(response);
+        //                 console.error('Failed to open new window');
+        //             }
+        //         }, (error) => {
+        //             console.error('Error submitting form:', error);
+        //         }
+        //     );
     }
-}
-
-sendPhotos(photoFormData: FormData, orgPhotoFormData: FormData): void {
-    // Send photograph
-    if (photoFormData.has('photograph')) {
-        this.http.post('http://127.0.0.1:5000/upload_photo', photoFormData, {responseType: 'text'})
-            .subscribe(
-                (response) => {
-                    console.log('Photograph uploaded successfully:', response);
-                },
-                (error) => {
-                    console.error('Error uploading photograph:', error);
-                }
-            );
-    }
-
-    // Send organization photograph
-    if (orgPhotoFormData.has('organization_photograph')) {
-        this.http.post('http://127.0.0.1:5000/upload_org_photo', orgPhotoFormData, {responseType: 'text'})
-            .subscribe(
-                (response) => {
-                    console.log('Organization photograph uploaded successfully:', response);
-                },
-                (error) => {
-                    console.error('Error uploading organization photograph:', error);
-                }
-            );
-    }
-}
 }

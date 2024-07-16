@@ -38,9 +38,6 @@
                 <label class="input-group-text" for="photographInput">Upload</label>
               </div>
             </div>
-<!--            <div class="col-12 col-md-6">-->
-<!--              <input type="text" class="form-control" [value]="mainForm.get('photograph')?.value" readonly placeholder="No file chosen" [class.is-invalid]="mainForm.get('photograph')?.invalid && mainForm.get('photograph')?.touched">-->
-<!--            </div>-->
           </div>
           <small class="text-muted">Please upload a .jpg or .jpeg file.</small>
         </div>
@@ -52,8 +49,8 @@
           <div class="row">
             <div class="col-12 col-md-6">
               <div class="input-group">
-                <input type="file" class="form-control" (change)="onOrganizationFileSelected($event)" accept=".jpg,.jpeg">
-                <label class="input-group-text">Upload</label>
+                <input type="file" class="form-control" (change)="onOrganizationFileSelected($event)" accept=".jpg,.jpeg" id="orgphotoinput">
+                <label class="input-group-text" for="orgphotoinput">Upload</label>
               </div>
             </div>
           </div>
@@ -65,11 +62,6 @@
         <div class="mt-3">
           <h5 class="mb-2 btn btn-dark">Additional Details</h5>
           <div class="d-flex gap-0 row">
-            <!-- <div class="form-group col-12 col-md-4 mt-2">
-              <input type="text" class="form-control" formControlName="marital_status" placeholder="Marital Status">
-            </div> -->
-            <!-- <div class="form-group col-12 col-md-4 mt-2">
-              <input type="text" class="form-control" formControlName="hobbies" placeholder="Hobbies">
             </div> -->
             <div class="form-group col-12 col-md-4 mt-2">
               <input type="text" class="form-control" formControlName="dream_sector1" placeholder="Dream Sector 1">
@@ -132,6 +124,9 @@
               </div>
               <div class="form-group col-6 col-md-6">
                 <input type="text" class="form-control" formControlName="institution" placeholder="Institution">
+              </div>
+                <div class="form-group col-6 col-md-6">
+                <input type="text" class="form-control" formControlName="board-university" placeholder="Board/University">
               </div>
             </div>
           </div>

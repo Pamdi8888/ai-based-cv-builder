@@ -22,10 +22,10 @@ def password_hash(password):
     return generate_password_hash(password)
 
 
-@views.route('/static', methods=['GET', 'POST'])
+@views.route('/main', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        raw_data = request.get_json()
+        raw_data = request.get_json()['data']
         print(f"Raw Data: {raw_data}")
         try:
             formatted_query = query_template.template.format(query=raw_data)
@@ -43,12 +43,12 @@ def home():
 
 @views.route('/')
 def root():
-    return redirect('/static')
+    return redirect('/main')
 
 
 @views.route('/static/')
 def root_static():
-    return redirect('/static')
+    return redirect('/main')
 
 
 # @views.route('/enhance', methods=['POST'])
@@ -70,28 +70,30 @@ def chat():
 
 @views.route('/user/add_full', methods=['POST'])
 def add_full_user():
-    if 'data' not in request.form or 'profile_photo' not in request.files:
-        return jsonify({'error': 'Missing form data or files'}), 400
+    # if 'data' not in request.form or 'profile_photo' not in request.files:
+    #     return jsonify({'error': 'Missing form data or files'}), 400
 
-    data = json.loads(request.form['data'])
-
+    data = json.loads(request.form.get('data'))
+    print("a")
     existing_user = User.query.filter_by(mail=data['mail']).first()
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 409
-
-    organization_photo = request.files['organization_photo']
-    if(organization_photo and allowed_file(organization_photo.filename)):
+    print('b')
+    organization_photo = request.files['organization_photograph']
+    if organization_photo and allowed_file(organization_photo.filename):
         organization_photo_filename = secure_filename(organization_photo.filename)
         organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
         organization_photo.save(organization_photo_path)
-
-    profile_photo = request.files['profile_photo']
+    print('c')
+    profile_photo = request.files['photograph']
     if profile_photo and allowed_file(profile_photo.filename):
         profile_photo_filename = secure_filename(profile_photo.filename)
         profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
         profile_photo.save(profile_photo_path)
     else:
         return jsonify({'error': 'Profile photo type not allowed'}), 400
+
+    print(f"data: {data} \n photo: {profile_photo} \n organization_photo: {organization_photo}s")
 
     user = User(
         full_name=data['full_name'],
@@ -111,6 +113,7 @@ def add_full_user():
         profile_photo=profile_photo_path,
         organization_photo=organization_photo_path
     )
+
     db.session.add(user)
     db.session.commit()
     for language_data in data.get('languages', []):

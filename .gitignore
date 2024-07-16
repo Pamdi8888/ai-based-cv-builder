@@ -2,5 +2,9 @@ website/__pycache__/
 website/llm/__pycache__/
 website/static/uploads
 .env
+<<<<<<< HEAD
 website/front/.angular
 website/front/node_modules
+=======
+.DS_Store
+>>>>>>> 6b01ec3769338d0e97278430b2a1f30915ece821
