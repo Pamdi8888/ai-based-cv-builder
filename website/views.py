@@ -70,29 +70,28 @@ def chat():
 
 @views.route('/user/add_full', methods=['POST'])
 def add_full_user():
-    print(request.files)
+    if 'data' not in request.form or 'profile_photo' not in request.files:
+        return jsonify({'error': 'Missing form data or files'}), 400
 
-    if 'photograph' in request.files:
-        photograph = request.files['photograph']
-        if photograph and allowed_file(photograph.filename):
-            photograph_filename = secure_filename(photograph.filename)
-            photograph_path = os.path.join(UPLOAD_FOLDER, photograph_filename)
-            photograph.save(photograph_path)
-        else:
-            return jsonify({'error': 'Photograph type not allowed'}), 400
-
-    data = request.form.to_dict()
-    print(data)
+    data = json.loads(request.form['data'])
 
     existing_user = User.query.filter_by(mail=data['mail']).first()
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 409
 
-    # organization_photo = request.files['organization_photo']
-    # if organization_photo and allowed_file(organization_photo.filename):
-    #     organization_photo_filename = secure_filename(organization_photo.filename)
-    #     organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
-    #     organization_photo.save(organization_photo_path)
+    organization_photo = request.files['organization_photo']
+    if(organization_photo and allowed_file(profile_photo.filename)):
+        organization_photo_filename = secure_filename(organization_photo.filename)
+        organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
+        organization_photo.save(organization_photo_path)
+
+    profile_photo = request.files['profile_photo']
+    if profile_photo and allowed_file(profile_photo.filename):
+        profile_photo_filename = secure_filename(profile_photo.filename)
+        profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
+        profile_photo.save(profile_photo_path)
+    else:
+        return jsonify({'error': 'Profile photo type not allowed'}), 400
 
     user = User(
         full_name=data['full_name'],
@@ -109,7 +108,8 @@ def add_full_user():
         prof_summary=data.get('prof_summary'),
         password=password_hash(data['password']),
         template_id=data.get('template_id'),
-        profile_photo=photograph_path
+        profile_photo=profile_photo_path,
+        organization_photo=organization_photo_path
     )
     db.session.add(user)
     db.session.commit()
