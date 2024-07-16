@@ -47,21 +47,16 @@ export class MainComponent implements OnInit {
             projects: this.fb.array([this.createProject()]),
             social_accounts: this.fb.array([this.createSocialAccount()]),
             work_experience: this.fb.array([this.createWorkExperience()]),
-            //internships: this.fb.array([this.createInternship()]),
             volunteer_activities: this.fb.array([this.createVolunteerActivity()]),
             accomplishments: this.fb.array([this.createAccomplishment()]),
             positions_of_responsibility: this.fb.array([this.createPositionOfResponsibility()]),
             extra_curriculars: this.fb.array([this.createExtraCurricular()]),
-            //  documents: this.fb.array([this.createDocument()])
             certifications: this.fb.array([this.createCertification()]),
             competitions: this.fb.array([this.createCompetition()]),
             conferences_workshops: this.fb.array([this.createConferenceWorkshop()]),
             test_scores: this.fb.array([this.createTestScore()]),
             patents_publications: this.fb.array([this.createPatentPublication()]),
-            scholarships: this.fb.array([this.createScholarship()]),
-            // photograph: [''],
-            // organization_photograph: [''],
-
+            scholarships: this.fb.array([this.createScholarship()])
         });
     }
 
@@ -89,10 +84,6 @@ export class MainComponent implements OnInit {
         return this.mainForm.get('work_experience') as FormArray;
     }
 
-    // get internshipsFormArray() {
-    //     return this.mainForm.get('internships') as FormArray;
-    // }
-
     get volunteerActivitiesFormArray() {
         return this.mainForm.get('volunteer_activities') as FormArray;
     }
@@ -109,7 +100,6 @@ export class MainComponent implements OnInit {
         return this.mainForm.get('extra_curriculars') as FormArray;
     }
 
-    //get documentsFormArray() { return this.mainForm.get('documents') as FormArray; }
     get certificationsFormArray() {
         return this.mainForm.get('certifications') as FormArray;
     }
@@ -171,10 +161,6 @@ export class MainComponent implements OnInit {
         this.workExperienceFormArray.push(this.createWorkExperience());
     }
 
-    // addInternship() {
-    //     this.internshipsFormArray.push(this.createInternship());
-    // }
-
     addVolunteerActivity() {
         this.volunteerActivitiesFormArray.push(this.createVolunteerActivity());
     }
@@ -191,7 +177,6 @@ export class MainComponent implements OnInit {
         this.extraCurricularsFormArray.push(this.createExtraCurricular());
     }
 
-    //addDocument() { this.documentsFormArray.push(this.createDocument()); }
     addCertification() {
         this.certificationsFormArray.push(this.createCertification());
     }
@@ -229,7 +214,8 @@ export class MainComponent implements OnInit {
             grad_year: [''],
             percentage_cgpa: [''],
             specialization: [''],
-            institution: ['']
+            institution: [''],
+            board_university: ['']
         });
     }
 
@@ -258,15 +244,6 @@ export class MainComponent implements OnInit {
             organization: ['']
         });
     }
-
-    // createInternship(): FormGroup {
-    //     return this.fb.group({
-    //         role: [''],
-    //         cause: [''],
-    //         description: [''],
-    //         organization: ['']
-    //     });
-    // }
 
     createVolunteerActivity(): FormGroup {
         return this.fb.group({
@@ -302,14 +279,6 @@ export class MainComponent implements OnInit {
             description: ['']
         });
     }
-
-    // createDocument(): FormGroup {
-    //   return this.fb.group({
-    //     name: [''],
-    //     category: [''],
-    //     description: ['']
-    //   });
-    // }
 
     createCertification(): FormGroup {
         return this.fb.group({
