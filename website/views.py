@@ -80,7 +80,7 @@ def add_full_user():
         return jsonify({'error': 'User with this email already exists'}), 409
 
     organization_photo = request.files['organization_photo']
-    if(organization_photo and allowed_file(profile_photo.filename)):
+    if(organization_photo and allowed_file(organization_photo.filename)):
         organization_photo_filename = secure_filename(organization_photo.filename)
         organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
         organization_photo.save(organization_photo_path)
@@ -113,7 +113,6 @@ def add_full_user():
     )
     db.session.add(user)
     db.session.commit()
-
     for language_data in data.get('languages', []):
         language = Language(
             language=language_data['language'],
@@ -121,14 +120,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(language)
-
     for education_data in data.get('education', []):
         institution = Institution.query.filter_by(name=education_data['institution']).first()
         if not institution:
             institution = Institution(name=education_data['institution'])
             db.session.add(institution)
             db.session.commit()
-
         education = Education(
             board_university=education_data['board_university'],
             grad_year=education_data['grad_year'],
@@ -138,7 +135,6 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(education)
-
     for project_data in data.get('projects', []):
         project = Project(
             title=project_data['title'],
@@ -149,7 +145,6 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(project)
-
     for social_account_data in data.get('social_accounts', []):
         social_account = SocialAccount(
             name=social_account_data['name'],
@@ -157,14 +152,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(social_account)
-
     for work_experience_data in data.get('work_experience', []):
         organization = Organization.query.filter_by(name=work_experience_data['organization']).first()
         if not organization:
             organization = Organization(name=work_experience_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         work_experience = WorkExperience(
             role=work_experience_data['role'],
             description=work_experience_data.get('description'),
@@ -173,14 +166,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(work_experience)
-
     for volunteer_activity_data in data.get('volunteer_activities', []):
         organization = Organization.query.filter_by(name=volunteer_activity_data['organization']).first()
         if not organization:
             organization = Organization(name=volunteer_activity_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         volunteer_activity = VolunteerActivity(
             role=volunteer_activity_data['role'],
             description=volunteer_activity_data.get('description'),
@@ -189,14 +180,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(volunteer_activity)
-
     for accomplishment_data in data.get('accomplishments', []):
         organization = Organization.query.filter_by(name=accomplishment_data['organization']).first()
         if not organization:
             organization = Organization(name=accomplishment_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         accomplishment = Accomplishment(
             name=accomplishment_data['name'],
             description=accomplishment_data.get('description'),
@@ -205,14 +194,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(accomplishment)
-
     for position_of_responsibility_data in data.get('positions_of_responsibility', []):
         organization = Organization.query.filter_by(name=position_of_responsibility_data['organization']).first()
         if not organization:
             organization = Organization(name=position_of_responsibility_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         position_of_responsibility = PositionOfResponsibility(
             role=position_of_responsibility_data['role'],
             description=position_of_responsibility_data.get('description'),
@@ -221,7 +208,6 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(position_of_responsibility)
-
     for extra_curricular_data in data.get('extra_curriculars', []):
         extra_curricular = ExtraCurricular(
             name=extra_curricular_data['name'],
@@ -230,14 +216,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(extra_curricular)
-
     for certification_data in data.get('certifications', []):
         organization = Organization.query.filter_by(name=certification_data['organization']).first()
         if not organization:
             organization = Organization(name=certification_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         certification = Certification(
             name=certification_data['name'],
             date=certification_data.get('date'),
@@ -245,14 +229,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(certification)
-
     for competition_data in data.get('competitions', []):
         organization = Organization.query.filter_by(name=competition_data['organization']).first()
         if not organization:
             organization = Organization(name=competition_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         competition = Competition(
             name=competition_data['name'],
             date=competition_data.get('date'),
@@ -261,14 +243,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(competition)
-
     for conference_workshop_data in data.get('conferences_workshops', []):
         organization = Organization.query.filter_by(name=conference_workshop_data['organization']).first()
         if not organization:
             organization = Organization(name=conference_workshop_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         conference_workshop = ConferenceWorkshop(
             name=conference_workshop_data['name'],
             date=conference_workshop_data.get('date'),
@@ -277,7 +257,6 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(conference_workshop)
-
     for test_score_data in data.get('test_scores', []):
         test_score = TestScore(
             name=test_score_data['name'],
@@ -286,14 +265,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(test_score)
-
     for patent_publication_data in data.get('patents_publications', []):
         organization = Organization.query.filter_by(name=patent_publication_data['organization']).first()
         if not organization:
             organization = Organization(name=patent_publication_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         patent_publication = PatentPublication(
             name=patent_publication_data['name'],
             date=patent_publication_data.get('date'),
@@ -302,14 +279,12 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(patent_publication)
-
     for scholarship_data in data.get('scholarships', []):
         organization = Organization.query.filter_by(name=scholarship_data['organization']).first()
         if not organization:
             organization = Organization(name=scholarship_data['organization'])
             db.session.add(organization)
             db.session.commit()
-
         scholarship = Scholarship(
             name=scholarship_data['name'],
             date=scholarship_data.get('date'),
@@ -318,7 +293,5 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(scholarship)
-
     db.session.commit()
-
     return jsonify({'message': 'User created successfully'}), 201
