@@ -42,7 +42,6 @@ export class MainComponent implements OnInit {
             // password: ['', [Validators.required, Validators.minLength(6)]],
             // template_id: [1, [Validators.required]],
             format: ['', [Validators.required, formatValidator()]],
-
             languages: this.fb.array([this.createLanguage()]),
             education: this.fb.array([this.createEducation()]),
             projects: this.fb.array([this.createProject()]),
@@ -60,8 +59,8 @@ export class MainComponent implements OnInit {
             test_scores: this.fb.array([this.createTestScore()]),
             patents_publications: this.fb.array([this.createPatentPublication()]),
             scholarships: this.fb.array([this.createScholarship()]),
-            photograph: [''],
-            organization_photograph: [''],
+            // photograph: [''],
+            // organization_photograph: [''],
 
         });
     }
@@ -381,7 +380,6 @@ export class MainComponent implements OnInit {
         const file = event.target.files[0];
         if (file && (file.type === 'image/jpeg' || file.type === 'image/jpg')) {
             this.selectedFile = file;
-
         } else {
             alert('Please select a valid .jpg or .jpeg file.');
             this.selectedFile = null;
@@ -455,67 +453,56 @@ export class MainComponent implements OnInit {
     onSubmit(): void {
         if (this.mainForm.valid) {
             const formData = new FormData();
-            const photoFormData = new FormData();
-            const orgPhotoFormData = new FormData();
-
+            //
+            console.log(this.mainForm.value);
             // Append form data
-            for (const key in this.mainForm.value) {
-                if (key !== 'photograph' && key !== 'organization_photograph') {
-                    formData.append(key, this.mainForm.value[key]);
-                }
-            }
+            formData.append('data', JSON.stringify(this.mainForm.value));
 
             // Append the selected file for photograph
             if (this.selectedFile) {
-                photoFormData.append('photograph', this.selectedFile, this.selectedFile.name);
+                formData.append('photograph', this.selectedFile, this.selectedFile.name);
             }
 
             // Append the selected organization file
             if (this.selectedOrganizationFile) {
-                orgPhotoFormData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
+                formData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
             }
 
-            console.log('FormData:', formData);
-            console.log('PhotoFormData:', photoFormData);
-            console.log('OrgPhotoFormData:', orgPhotoFormData);
-
             // Send formData to database
-            //     this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
-            //         .subscribe(
-            //             (response) => {
-            //                 console.log('Form Submitted Successfully:', response);
-            //
-            //                 // After successful form submission, send the photos
-            //                 this.sendPhotos(photoFormData, orgPhotoFormData);
-            //             },
-            //             (error) => {
-            //                 console.error('Error updating Database:', error);
-            //             }
-            //         );
-            // } else {
-            //     console.log('Form is invalid');
-            // }
+            this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
+                .subscribe(
+                    (response) => {
+                        console.log('Form Submitted Successfully:', response);
 
-            // Send formData to your server
-            this.http.post('http://127.0.0.1:5000/main', formData, {responseType: 'text'})
-                .subscribe((response) => {
-                        console.log('Form Submitted');
-                        const newWindow = window.open();
-                        if (newWindow) {
-                            newWindow.document.write(response);
-                            newWindow.document.close();
-                        } else {
-                            // console.log(response);
-                            console.error('Failed to open new window');
-                        }
-                    }, (error) => {
-                        console.error('Error submitting form:', error);
+                        // After successful form submission, send the photos
+                        // this.sendPhotos(photoFormData, orgPhotoFormData);
+                    },
+                    (error) => {
+                        console.error('Error updating Database:', error);
                     }
                 );
         } else {
             console.log('Form is invalid');
         }
+
+        // Send formData to your server
+        // this.http.post('http://127.0.0.1:5000/main', formData, {responseType: 'text'})
+        //     .subscribe((response) => {
+        //             console.log('Form Submitted');
+        //             const newWindow = window.open();
+        //             if (newWindow) {
+        //                 newWindow.document.write(response);
+        //                 newWindow.document.close();
+        //             } else {
+        //                 // console.log(response);
+        //                 console.error('Failed to open new window');
+        //             }
+        //         }, (error) => {
+        //             console.error('Error submitting form:', error);
+        //         }
+        //     );
     }
+
 
 // sendPhotos(photoFormData: FormData, orgPhotoFormData: FormData): void {
 //     // Send photograph
