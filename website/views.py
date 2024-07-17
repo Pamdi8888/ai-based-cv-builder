@@ -52,37 +52,37 @@ def home():
             profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
             profile_photo.save(profile_photo_path)
 
-        # try:
-        #     formatted_query = query_template.template.format(query=raw_data)
-        #     ai_raw_data = json.loads(llm_service(formatted_query))
-        #     print(f"AI Raw Data: {ai_raw_data}")
-        #     ai_data = dataMgmt.DataManagement(ai_raw_data)
-        #     # add organization_photo_filename and profile_photo_filename to data
-        #     try:
-        #         ai_data['organization_photo'] = organization_photo_filename
-        #     except:
-        #         ai_data['organization_photo'] = ''
-        #     try:
-        #         ai_data['profile_photo'] = profile_photo_filename
-        #     except:
-        #         ai_data['profile_photo'] = ''
-        #     print(f"AI Data: {ai_data}")
-        #     print("AI Generated CV Rendered")
-        #     return render_template(f'temp{ai_data["format"]}.html', **ai_data)
-        # except:
-        data = dataMgmt.DataManagement(raw_data)
-        # add organization_photo_filename and profile_photo_filename to data
         try:
-            data['organization_photo'] = organization_photo_filename
+            formatted_query = query_template.template.format(query=raw_data)
+            ai_raw_data = json.loads(llm_service(formatted_query))
+            print(f"AI Raw Data: {ai_raw_data}")
+            ai_data = dataMgmt.DataManagement(ai_raw_data)
+            # add organization_photo_filename and profile_photo_filename to data
+            try:
+                ai_data['organization_photo'] = organization_photo_filename
+            except:
+                ai_data['organization_photo'] = ''
+            try:
+                ai_data['profile_photo'] = profile_photo_filename
+            except:
+                ai_data['profile_photo'] = ''
+            print(f"AI Data: {ai_data}")
+            print("AI Generated CV Rendered")
+            return render_template(f'temp{ai_data["format"]}.html', **ai_data)
         except:
-            data['organization_photo'] = ''
-        try:
-            data['profile_photo'] = profile_photo_filename
-        except:
-            data['profile_photo'] = ''
-        print(f"Data: {data}")
-        print("User Data based CV Rendered")
-        return render_template(f'temp{data["format"]}.html', **data)
+            data = dataMgmt.DataManagement(raw_data)
+            # add organization_photo_filename and profile_photo_filename to data
+            try:
+                data['organization_photo'] = organization_photo_filename
+            except:
+                data['organization_photo'] = ''
+            try:
+                data['profile_photo'] = profile_photo_filename
+            except:
+                data['profile_photo'] = ''
+            print(f"Data: {data}")
+            print("User Data based CV Rendered")
+            return render_template(f'temp{data["format"]}.html', **data)
     return render_template('index.html')
 
 
