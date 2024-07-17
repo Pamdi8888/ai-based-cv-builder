@@ -99,17 +99,19 @@
             </table>
         </div>
     {% endif %}
-    {% if courses != '' or skills[0].skill != '' %}
+    {% if subjects[0].subject != '' or skills[0].skill != '' %}
         <div style="border: 1px solid black; margin: 1px; margin-top: 5px">
             <table style="width:100%;table-layout: fixed;">
                 <tbody>
-                {% if courses != '' %}
+                {% if subjects[0].subject != '' %}
                     <tr style="border-bottom:1px solid black;">
                         <td style="width: 150px; border-right: 1px solid black; padding: 5px; background-color:#cfcbcb;">
                             <strong>SUBJECTS / ELECTIVES</strong><!---->
                         </td>
                         <td>
-                            {{ courses }}
+                            {% for subject in subjects %}
+                            {{ subject.subject }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
                         </td>
                     </tr>
                 {% endif %}

@@ -155,6 +155,7 @@ def DataManagement(raw_data):
         'additional_info': raw_data['additional_info'],
         'minor_course_details': raw_data['minor_course_details'],
         'skills': raw_data['skills'],
+        'subjects': raw_data['subjects'],
         'prof_summary': raw_data['prof_summary'],
         'languages': raw_data['languages'],
         'education': raw_data['education'],
