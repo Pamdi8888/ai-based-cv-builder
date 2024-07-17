@@ -26,6 +26,10 @@ def password_hash(password):
 @views.route('/static/main', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
+
+        if not os.path.exists(UPLOAD_FOLDER):
+            os.makedirs(UPLOAD_FOLDER)
+
         raw_data = json.loads(request.form.get('data'))
 
         print(f"Raw Data: {raw_data}")
@@ -48,25 +52,25 @@ def home():
             profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
             profile_photo.save(profile_photo_path)
 
-        # try:
-        #     formatted_query = query_template.template.format(query=raw_data)
-        #     ai_raw_data = json.loads(llm_service(formatted_query))
-        #     print(f"AI Raw Data: {ai_raw_data}")
-        #     ai_data = dataMgmt.DataManagement(ai_raw_data)
-        #     # add organization_photo_filename and profile_photo_filename to data
-        #     try:
-        #         ai_data['organization_photo'] = organization_photo_filename
-        #     except:
-        #         ai_data['organization_photo'] = ''
-        #     try:
-        #         ai_data['profile_photo'] = profile_photo_filename
-        #     except:
-        #         ai_data['profile_photo'] = ''
-        #     print(f"AI Data: {ai_data}")
-        #     print("AI Generated CV Rendered")
-        #     return render_template('temp2.html', **ai_data)
-        # except:
-        data = dataMgmt.DataManagement(raw_data)
+        try:
+            formatted_query = query_template.template.format(query=raw_data)
+            ai_raw_data = json.loads(llm_service(formatted_query))
+            print(f"AI Raw Data: {ai_raw_data}")
+            ai_data = dataMgmt.DataManagement(ai_raw_data)
+            # add organization_photo_filename and profile_photo_filename to data
+            try:
+                ai_data['organization_photo'] = organization_photo_filename
+            except:
+                ai_data['organization_photo'] = ''
+            try:
+                ai_data['profile_photo'] = profile_photo_filename
+            except:
+                ai_data['profile_photo'] = ''
+            print(f"AI Data: {ai_data}")
+            print("AI Generated CV Rendered")
+            return render_template('temp2.html', **ai_data)
+        except:
+            data = dataMgmt.DataManagement(raw_data)
         # add organization_photo_filename and profile_photo_filename to data
         try:
             data['organization_photo'] = organization_photo_filename
@@ -118,6 +122,10 @@ def add_full_user():
     #     return jsonify({'error': 'Missing form data or files'}), 400
 
     data = json.loads(request.form.get('data'))
+
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER)
+
     # print("a")
     # existing_user = User.query.filter_by(mail=data['mail']).first()
     # if existing_user:
