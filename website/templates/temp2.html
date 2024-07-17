@@ -59,7 +59,12 @@
 <div class="container">
     <div class="header">
         <div>
-            <img src="{{ url_for('static', filename='profile-picture.png') }}" alt="Profile Photo">
+{#            <img src="{{ url_for('static', filename='profile-picture.png') }}" alt="Profile Photo">#}
+            {% if profile_photo!='' %}
+                <img src="{{ url_for('static', filename='uploads/' + profile_photo) }}" alt="Profile Photo">
+            {% else %}
+                <img src="{{ url_for('static', filename='default_pfp.jpg') }}" alt="Default Profile Photo">
+            {% endif %}
         </div>
         <div>
             <h2>{{ full_name }}</h2>
@@ -69,7 +74,10 @@
             <strong>CGPA:</strong> {{ cgpa }}
         </div>
         <div>
-            <img src="{{ college_logo }}" alt="College Logo">
+{#            <img src="{{ college_logo }}" alt="College Logo">#}
+             {% if organization_photo!='' %}
+                <img src="{{ url_for('static', filename='uploads/' + organization_photo) }}" alt="Profile Photo">
+            {% endif %}
         </div>
     </div>
     {% if education[0].institution != '' %}
