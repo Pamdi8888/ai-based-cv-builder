@@ -173,6 +173,7 @@ def DataManagement(raw_data):
         'test_scores': raw_data['test_scores'],
         'patents_publications': raw_data['patents_publications'],
         'scholarships': raw_data['scholarships'],
+        'format': raw_data['format'],
     }
 
     return data
