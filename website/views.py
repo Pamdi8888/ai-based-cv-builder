@@ -71,18 +71,18 @@ def home():
             return render_template('temp2.html', **ai_data)
         except:
             data = dataMgmt.DataManagement(raw_data)
-        # add organization_photo_filename and profile_photo_filename to data
-        try:
-            data['organization_photo'] = organization_photo_filename
-        except:
-            data['organization_photo'] = ''
-        try:
-            data['profile_photo'] = profile_photo_filename
-        except:
-            data['profile_photo'] = ''
-        print(f"Data: {data}")
-        print("User Data based CV Rendered")
-        return render_template("temp3.html", **data)
+            # add organization_photo_filename and profile_photo_filename to data
+            try:
+                data['organization_photo'] = organization_photo_filename
+            except:
+                data['organization_photo'] = ''
+            try:
+                data['profile_photo'] = profile_photo_filename
+            except:
+                data['profile_photo'] = ''
+            print(f"Data: {data}")
+            print("User Data based CV Rendered")
+            return render_template("temp3.html", **data)
     return render_template('index.html')
 
 
