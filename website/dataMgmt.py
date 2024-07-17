@@ -149,14 +149,14 @@ def DataManagement(raw_data):
         'mail': raw_data['mail'],
         # 'marital_status': raw_data['marital_status'],
         # 'hobbies': raw_data['hobbies'],
-        'dream_sector1': raw_data['dream_sector1'],
-        'dream_sector2': raw_data['dream_sector2'],
-        'career_plans': raw_data['career_plans'],
-        'additional_info': raw_data['additional_info'],
-        'minor_course_details': raw_data['minor_course_details'],
+        # 'dream_sector1': raw_data['dream_sector1'],
+        # 'dream_sector2': raw_data['dream_sector2'],
+        # 'career_plans': raw_data['career_plans'],
+        # 'additional_info': raw_data['additional_info'],
+        # 'minor_course_details': raw_data['minor_course_details'],
         'skills': raw_data['skills'],
         'subjects': raw_data['subjects'],
-        'prof_summary': raw_data['prof_summary'],
+        # 'prof_summary': raw_data['prof_summary'],
         'languages': raw_data['languages'],
         'education': raw_data['education'],
         'projects': raw_data['projects'],
@@ -174,6 +174,8 @@ def DataManagement(raw_data):
         'patents_publications': raw_data['patents_publications'],
         'scholarships': raw_data['scholarships'],
         'format': raw_data['format'],
+        'phone': raw_data['phone'],
+        'profession': raw_data['profession']
     }
 
     return data
