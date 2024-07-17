@@ -385,6 +385,7 @@ export class MainComponent implements OnInit {
                 formData.append('organization_photograph', this.selectedOrganizationFile, this.selectedOrganizationFile.name);
             }
 
+
             // Send formData to database
             this.http.post('http://127.0.0.1:5000/user/add_full', formData, {responseType: 'text'})
                 .subscribe(
@@ -398,25 +399,24 @@ export class MainComponent implements OnInit {
                         console.error('Error updating Database:', error);
                     }
                 );
-        } else {
-            console.log('Form is invalid');
-        }
 
-        // Send formData to your server
-        // this.http.post('http://127.0.0.1:5000/static/main', formData, {responseType: 'text'})
-        //     .subscribe((response) => {
-        //             console.log('Form Submitted');
-        //             const newWindow = window.open();
-        //             if (newWindow) {
-        //                 newWindow.document.write(response);
-        //                 newWindow.document.close();
-        //             } else {
-        //                 // console.log(response);
-        //                 console.error('Failed to open new window');
-        //             }
-        //         }, (error) => {
-        //             console.error('Error submitting form:', error);
-        //         }
-        //     );
+
+            // Send formData to your server
+            this.http.post('http://127.0.0.1:5000/static/main', formData, {responseType: 'text'})
+                .subscribe((response) => {
+                        console.log('Form Submitted');
+                        const newWindow = window.open();
+                        if (newWindow) {
+                            newWindow.document.write(response);
+                            newWindow.document.close();
+                        } else {
+                            // console.log(response);
+                            console.error('Failed to open new window');
+                        }
+                    }, (error) => {
+                        console.error('Error submitting form:', error);
+                    }
+                );
+        }
     }
 }

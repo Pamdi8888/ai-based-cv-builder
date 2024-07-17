@@ -25,19 +25,39 @@ def password_hash(password):
 @views.route('/static/main', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        raw_data = request.get_json()['data']
+        raw_data = json.loads(request.form.get('data'))
+
         print(f"Raw Data: {raw_data}")
+
         try:
-            formatted_query = query_template.template.format(query=raw_data)
-            ai_raw_data = json.loads(llm_service(formatted_query))
-            print(f"AI Raw Data: {ai_raw_data}")
-            ai_data = dataMgmt.DataManagement(ai_raw_data)
-            print("AI Generated CV Rendered")
-            return render_template('temp2.html', **ai_data)
+            organization_photo = request.files['organization_photograph']
         except:
-            data = dataMgmt.DataManagement(raw_data)
-            print("User Data based CV Rendered")
-            return render_template("temp2.html", **data)
+            organization_photo = None
+        if organization_photo and allowed_file(organization_photo.filename):
+            organization_photo_filename = secure_filename(organization_photo.filename)
+            organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
+            organization_photo.save(organization_photo_path)
+
+        try:
+            profile_photo = request.files['photograph']
+        except:
+            profile_photo = None
+        if profile_photo and allowed_file(profile_photo.filename):
+            profile_photo_filename = secure_filename(profile_photo.filename)
+            profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
+            profile_photo.save(profile_photo_path)
+
+        # try:
+        #     formatted_query = query_template.template.format(query=raw_data)
+        #     ai_raw_data = json.loads(llm_service(formatted_query))
+        #     print(f"AI Raw Data: {ai_raw_data}")
+        #     ai_data = dataMgmt.DataManagement(ai_raw_data)
+        #     print("AI Generated CV Rendered")
+        #     return render_template('temp2.html', **ai_data)
+        # except:
+        data = dataMgmt.DataManagement(raw_data)
+        print("User Data based CV Rendered")
+        return render_template("temp2.html", **data)
     return render_template('index.html')
 
 
@@ -45,6 +65,9 @@ def home():
 def root():
     return redirect('/static/main')
 
+@views.route('/')
+def root_default():
+    return redirect('/static/main')
 
 @views.route('/static/main/')
 def root_static():
@@ -74,18 +97,25 @@ def add_full_user():
     #     return jsonify({'error': 'Missing form data or files'}), 400
 
     data = json.loads(request.form.get('data'))
-    print("a")
+    # print("a")
     existing_user = User.query.filter_by(mail=data['mail']).first()
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 409
-    print('b')
-    organization_photo = request.files['organization_photograph']
+    # print('b')
+    organization_photo_path = None
+    try:
+        organization_photo = request.files['organization_photograph']
+    except:
+        organization_photo = None
     if organization_photo and allowed_file(organization_photo.filename):
         organization_photo_filename = secure_filename(organization_photo.filename)
         organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
         organization_photo.save(organization_photo_path)
-    print('c')
-    profile_photo = request.files['photograph']
+    # print('c')
+    try:
+        profile_photo = request.files['photograph']
+    except:
+        profile_photo = None
     if profile_photo and allowed_file(profile_photo.filename):
         profile_photo_filename = secure_filename(profile_photo.filename)
         profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
@@ -104,13 +134,13 @@ def add_full_user():
         career_plans=data.get('career_plans'),
         additional_info=data.get('additional_info'),
         minor_course_details=data.get('minor_course_details'),
-        subjects=data.get('subjects'),
-        skills=data.get('skills'),
+        subjects=json.dumps(data.get('subjects')),
+        skills=json.dumps(data.get('skills')),
         transaction_id=data.get('transaction_id'),
         prof_summary=data.get('prof_summary'),
         # password=password_hash(data['password']),
         password='dummy_password',
-        template_id=data.get('template_id'),
+        template_id=data.get('format'),
         profile_photo=profile_photo_path,
         organization_photo=organization_photo_path
     )
