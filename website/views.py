@@ -163,20 +163,22 @@ def add_full_user():
         full_name=data['full_name'],
         date_of_birth=data['date_of_birth'],
         mail=data['mail'],
-        dream_sector1=data.get('dream_sector1'),
-        dream_sector2=data.get('dream_sector2'),
-        career_plans=data.get('career_plans'),
-        additional_info=data.get('additional_info'),
-        minor_course_details=data.get('minor_course_details'),
+        # dream_sector1=data.get('dream_sector1'),
+        # dream_sector2=data.get('dream_sector2'),
+        # career_plans=data.get('career_plans'),
+        # additional_info=data.get('additional_info'),
+        # minor_course_details=data.get('minor_course_details'),
         subjects=json.dumps(data.get('subjects')),
         skills=json.dumps(data.get('skills')),
         transaction_id=t_id,
-        prof_summary=data.get('prof_summary'),
+        # prof_summary=data.get('prof_summary'),
         # password=password_hash(data['password']),
         password='dummy_password',
         template_id=data.get('format'),
         profile_photo=profile_photo_path,
-        organization_photo=organization_photo_path
+        organization_photo=organization_photo_path,
+        phone=data['phone'],
+        profession=data['profession']
     )
 
     db.session.add(user)
