@@ -78,7 +78,7 @@ def home():
             data['profile_photo'] = ''
         print(f"Data: {data}")
         print("User Data based CV Rendered")
-        return render_template("temp2.html", **data)
+        return render_template("temp3.html", **data)
     return render_template('index.html')
 
 
