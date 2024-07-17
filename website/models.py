@@ -1,3 +1,4 @@
+from enum import unique
 from . import db
 
 class User(db.Model):
@@ -6,7 +7,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     full_name = db.Column(db.String(255), nullable=False)
     date_of_birth = db.Column(db.Date)
-    mail = db.Column(db.String(255), nullable=False, unique=True)
+    mail = db.Column(db.String(255), nullable=False)
     dream_sector1 = db.Column(db.String(255))
     dream_sector2 = db.Column(db.String(255))
     career_plans = db.Column(db.Text)
@@ -14,7 +15,7 @@ class User(db.Model):
     minor_course_details = db.Column(db.Text)
     subjects = db.Column(db.Text)
     skills = db.Column(db.Text)
-    transaction_id = db.Column(db.String(255))
+    transaction_id = db.Column(db.String(255), unique=True)
     prof_summary = db.Column(db.Text)
     password = db.Column(db.String(255), nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey('templates.id'))

@@ -7,6 +7,7 @@ import os
 from . import dataMgmt
 from .llm.query import get_mistral as llm_service
 from .llm.template import query_template
+import uuid
 
 views = Blueprint('views', __name__)
 
@@ -98,9 +99,9 @@ def add_full_user():
 
     data = json.loads(request.form.get('data'))
     # print("a")
-    existing_user = User.query.filter_by(mail=data['mail']).first()
-    if existing_user:
-        return jsonify({'error': 'User with this email already exists'}), 409
+    # existing_user = User.query.filter_by(mail=data['mail']).first()
+    # if existing_user:
+    #     return jsonify({'error': 'User with this email already exists'}), 409
     # print('b')
     organization_photo_path = None
     try:
@@ -125,6 +126,8 @@ def add_full_user():
 
     print(f"data: {data} \n photo: {profile_photo} \n organization_photo: {organization_photo}s")
 
+    t_id = str(uuid.uuid4())
+
     user = User(
         full_name=data['full_name'],
         date_of_birth=data['date_of_birth'],
@@ -136,7 +139,7 @@ def add_full_user():
         minor_course_details=data.get('minor_course_details'),
         subjects=json.dumps(data.get('subjects')),
         skills=json.dumps(data.get('skills')),
-        transaction_id=data.get('transaction_id'),
+        transaction_id=t_id,
         prof_summary=data.get('prof_summary'),
         # password=password_hash(data['password']),
         password='dummy_password',
@@ -328,4 +331,4 @@ def add_full_user():
         )
         db.session.add(scholarship)
     db.session.commit()
-    return jsonify({'message': 'User created successfully'}), 201
+    return jsonify({'message': f'User created successfully with id: {t_id}'}), 201
