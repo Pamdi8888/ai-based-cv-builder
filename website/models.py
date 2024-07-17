@@ -55,7 +55,7 @@ class Education(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     board_university = db.Column(db.String(255))  # New field for board/university
-    grad_year = db.Column(db.String(4))
+    grad_year = db.Column(db.String(10))
     percentage_cgpa = db.Column(db.String(10))
     specialization = db.Column(db.String(100))
     institution_id = db.Column(db.Integer, db.ForeignKey('institution.id'))
