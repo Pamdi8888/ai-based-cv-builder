@@ -292,7 +292,7 @@ export class MainComponent implements OnInit {
         return this.fb.group({
             name: [''],
             date: [''],
-            position: [''],
+            description: [''],
             organization: ['']
         });
     }
