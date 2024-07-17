@@ -39,7 +39,7 @@ export class MainComponent implements OnInit {
             subjects: this.fb.array([this.createSubject()]),
             transaction_id: [''],
             prof_summary: [''],
-            // password: ['', [Validators.required, Validators.minLength(6)]],
+            password: ['dummy password', [Validators.required, Validators.minLength(6)]],
             // template_id: [1, [Validators.required]],
             format: ['', [Validators.required, formatValidator()]],
             languages: this.fb.array([this.createLanguage()]),

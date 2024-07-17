@@ -103,28 +103,31 @@ def add_full_user():
     # if existing_user:
     #     return jsonify({'error': 'User with this email already exists'}), 409
     # print('b')
+
+    organization_photo = request.files.get('organization_photograph', None)
     organization_photo_path = None
-    try:
-        organization_photo = request.files['organization_photograph']
-    except:
-        organization_photo = None
     if organization_photo and allowed_file(organization_photo.filename):
         organization_photo_filename = secure_filename(organization_photo.filename)
         organization_photo_path = os.path.join(UPLOAD_FOLDER, organization_photo_filename)
         organization_photo.save(organization_photo_path)
+    elif not organization_photo:
+        pass
+    else:
+        return jsonify({'error': 'Organization photo type not allowed'}), 400
     # print('c')
-    try:
-        profile_photo = request.files['photograph']
-    except:
-        profile_photo = None
+
+    profile_photo = request.files.get('photograph', None)
+    profile_photo_path = None
     if profile_photo and allowed_file(profile_photo.filename):
         profile_photo_filename = secure_filename(profile_photo.filename)
         profile_photo_path = os.path.join(UPLOAD_FOLDER, profile_photo_filename)
         profile_photo.save(profile_photo_path)
+    elif not profile_photo:
+        # Handle case where profile photo is not provided, if it's optional
+        pass  # Or log a message, or take any other appropriate action
     else:
+        # If the profile photo is provided but not allowed, return an error
         return jsonify({'error': 'Profile photo type not allowed'}), 400
-
-    print(f"data: {data} \n photo: {profile_photo} \n organization_photo: {organization_photo}s")
 
     t_id = str(uuid.uuid4())
 
