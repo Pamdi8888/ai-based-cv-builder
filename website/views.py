@@ -65,6 +65,9 @@ def home():
 def root():
     return redirect('/static/main')
 
+@views.route('/')
+def root_default():
+    return redirect('/static/main')
 
 @views.route('/static/main/')
 def root_static():
@@ -99,6 +102,7 @@ def add_full_user():
     if existing_user:
         return jsonify({'error': 'User with this email already exists'}), 409
     # print('b')
+    organization_photo_path = None
     try:
         organization_photo = request.files['organization_photograph']
     except:
@@ -130,13 +134,13 @@ def add_full_user():
         career_plans=data.get('career_plans'),
         additional_info=data.get('additional_info'),
         minor_course_details=data.get('minor_course_details'),
-        subjects=data.get('subjects'),
-        skills=data.get('skills'),
+        subjects=json.dumps(data.get('subjects')),
+        skills=json.dumps(data.get('skills')),
         transaction_id=data.get('transaction_id'),
         prof_summary=data.get('prof_summary'),
         # password=password_hash(data['password']),
         password='dummy_password',
-        template_id=data.get('template_id'),
+        template_id=data.get('format'),
         profile_photo=profile_photo_path,
         organization_photo=organization_photo_path
     )
