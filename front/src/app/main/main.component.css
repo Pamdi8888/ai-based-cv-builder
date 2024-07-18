@@ -25,3 +25,42 @@ h6 {
 .present{
   margin-top: 20px;
 }
+
+
+
+.row.mt-3 {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.col-md-6 {
+  padding-top: 25px;
+  padding-left: 0px;
+  padding-right: 65px;
+}
+
+#photograph, #organization-photograph {
+  width: auto;
+  text-align: left;
+}
+
+.input-group {
+  margin-bottom: 5px;
+}
+
+#subjects, #skills {
+  width: auto;
+  
+  text-align: left;
+}
+
+#subjects, #skills {
+  width: auto;
+  
+  text-align: left;
+}
+
+.btn-outline-primary {
+  margin-top: 10px;
+  width: auto;
+}
