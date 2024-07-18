@@ -10,25 +10,27 @@ class User(db.Model):
     mail = db.Column(db.String(255), nullable=False)
     phone = db.Column(db.String(15))
     profession = db.Column(db.String(255))
-    # dream_sector1 = db.Column(db.String(255))
-    # dream_sector2 = db.Column(db.String(255))
-    # career_plans = db.Column(db.Text)
-    # additional_info = db.Column(db.Text)
-    # minor_course_details = db.Column(db.Text)
     subjects = db.Column(db.Text)
     skills = db.Column(db.Text)
     transaction_id = db.Column(db.String(255), unique=True)
-    # prof_summary = db.Column(db.Text)
     password = db.Column(db.String(255), nullable=False)
     template_id = db.Column(db.Integer, db.ForeignKey('templates.id'))
     profile_photo = db.Column(db.String(255))
     organization_photo = db.Column(db.String(255))
 
+    # dream_sector1 = db.Column(db.String(255))
+    # dream_sector2 = db.Column(db.String(255))
+    # career_plans = db.Column(db.Text)
+    # additional_info = db.Column(db.Text)
+    # minor_course_details = db.Column(db.Text)
+    # prof_summary = db.Column(db.Text)
+    
+    # social_accounts = db.relationship("SocialAccount", back_populates="user", cascade="all, delete-orphan")
+
     template = db.relationship("Template")
     languages = db.relationship("Language", back_populates="user", cascade="all, delete-orphan")
     education = db.relationship("Education", back_populates="user", cascade="all, delete-orphan")
     projects = db.relationship("Project", back_populates="user", cascade="all, delete-orphan")
-    social_accounts = db.relationship("SocialAccount", back_populates="user", cascade="all, delete-orphan")
     work_experience = db.relationship("WorkExperience", back_populates="user", cascade="all, delete-orphan")
     volunteer_activities = db.relationship("VolunteerActivity", back_populates="user", cascade="all, delete-orphan")
     accomplishments = db.relationship("Accomplishment", back_populates="user", cascade="all, delete-orphan")
@@ -95,15 +97,6 @@ class Project(db.Model):
     user = db.relationship('User', back_populates='projects')
 
 
-class SocialAccount(db.Model):
-    __tablename__ = 'social_account'
-    
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(255), nullable=False)
-    url = db.Column(db.String(255))
-    user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
-    
-    user = db.relationship("User", back_populates="social_accounts")
 
 
 class WorkExperience(db.Model):
@@ -265,3 +258,13 @@ class Scholarship(db.Model):
     
     user = db.relationship("User", back_populates="scholarships")
     organization = db.relationship("Organization")
+
+# class SocialAccount(db.Model):
+#     __tablename__ = 'social_account'
+    
+#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+#     name = db.Column(db.String(255), nullable=False)
+#     url = db.Column(db.String(255))
+#     user_id = db.Column(db.Integer, db.ForeignKey('user_info.id', ondelete='CASCADE'))
+    
+#     user = db.relationship("User", back_populates="social_accounts")

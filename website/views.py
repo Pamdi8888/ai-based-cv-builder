@@ -163,16 +163,9 @@ def add_full_user():
         full_name=data['full_name'],
         date_of_birth=data['date_of_birth'],
         mail=data['mail'],
-        # dream_sector1=data.get('dream_sector1'),
-        # dream_sector2=data.get('dream_sector2'),
-        # career_plans=data.get('career_plans'),
-        # additional_info=data.get('additional_info'),
-        # minor_course_details=data.get('minor_course_details'),
         subjects=json.dumps(data.get('subjects')),
         skills=json.dumps(data.get('skills')),
         transaction_id=t_id,
-        # prof_summary=data.get('prof_summary'),
-        # password=password_hash(data['password']),
         password='dummy_password',
         template_id=data.get('format'),
         profile_photo=profile_photo_path,
@@ -181,6 +174,13 @@ def add_full_user():
         profession=data['profession']
     )
 
+        # dream_sector1=data.get('dream_sector1'),
+        # dream_sector2=data.get('dream_sector2'),
+        # career_plans=data.get('career_plans'),
+        # additional_info=data.get('additional_info'),
+        # minor_course_details=data.get('minor_course_details'),
+        # prof_summary=data.get('prof_summary'),
+        # password=password_hash(data['password']),
     db.session.add(user)
     db.session.commit()
     for language_data in data.get('languages', []):
@@ -215,13 +215,6 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(project)
-    for social_account_data in data.get('social_accounts', []):
-        social_account = SocialAccount(
-            name=social_account_data['name'],
-            url=social_account_data.get('url'),
-            user_id=user.id
-        )
-        db.session.add(social_account)
     for work_experience_data in data.get('work_experience', []):
         organization = Organization.query.filter_by(name=work_experience_data['organization']).first()
         if not organization:
@@ -349,6 +342,15 @@ def add_full_user():
             user_id=user.id
         )
         db.session.add(patent_publication)
+
+    # for social_account_data in data.get('social_accounts', []):
+    #     social_account = SocialAccount(
+    #         name=social_account_data['name'],
+    #         url=social_account_data.get('url'),
+    #         user_id=user.id
+    #     )
+    #     db.session.add(social_account)
+    
     for scholarship_data in data.get('scholarships', []):
         organization = Organization.query.filter_by(name=scholarship_data['organization']).first()
         if not organization:
