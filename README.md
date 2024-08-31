@@ -20,10 +20,10 @@ An AI-powered CV builder application that streamlines the process of creating pr
 ## Features
 
 - **AI-Driven CV Generation**: Automatically generate professional CVs using Mistralai's API based on user input.
-- **User-Friendly Interface**: Angular-powered frontend for an intuitive and seamless user experience.
+- **User-Friendly Interface**: Angular-powered frontend for a seamless user experience.
 - **Comprehensive Database**: A well-structured MySQL database with SQLAlchemy ORM for managing user data, CV templates, and generated CVs.
 - **Customizable CV Templates**: Users can choose from multiple CV templates and customize them according to their preferences.
-- **Secure and Scalable**: Built with Flask, ensuring security and scalability of the backend services.
+- **Secure and Scalable**: Built with Flask, ensuring good scalability of the backend services.
 
 ## Tech Stack
 
