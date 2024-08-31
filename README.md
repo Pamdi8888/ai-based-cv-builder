@@ -105,10 +105,6 @@ An AI-powered CV builder application that streamlines the process of creating pr
 
 5. Download or share your CV.
 
-## API Documentation
-
-The backend provides RESTful API endpoints for various operations, such as user authentication, CV generation, and template management. Detailed API documentation can be found [here](link-to-api-docs).
-
 ## Database Schema
 
 The database schema is designed to store user information, CV templates, and generated CVs. The key tables include:
