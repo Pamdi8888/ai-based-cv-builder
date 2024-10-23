@@ -20,6 +20,57 @@ This project explores the development of an AI-powered CV builder to streamline 
 
 ## Workflow
 
+### Website User Interaction:
+Input Data: The website user inputs their data into the UI
+(Angular).
+
+Receive CV: The website user can download or view the
+generated CV.
+
+### Data Flow to UI (Angular):
+The user-provided data is sent to the UI component built using
+Angular. This UI acts as the interface for the user to enter and
+view their data.
+
+### Data Submission to Backend:
+The data from the UI is forwarded to the Database Endpoint
+(/user/add_full), which is a Flask-based service.
+This endpoint is responsible for storing the data into a MySQL
+database.
+
+### Database Storage:
+The Flask endpoint stores the received data in a MySQL
+database for persistence.
+
+### CV Generation Endpoint:
+The UI (Angular) also sends the user data to the CV Generation
+Endpoint (/static/main), which is another Flask-based service.
+This endpoint processes the data for CV generation.
+
+### Data Processing and CV Generation:
+Data to LLM (Mistral): The user data is sent from the CV
+Generation Endpoint to the LLM (Mistral) for processing.
+LLM Processing: The LLM processes the data, enriching or
+formatting it as needed for the CV.
+
+Data to Jinja2: The processed data is then sent to a Jinja2
+template for the final CV generation.
+
+CV Creation: A CV is generated using the chosen Jinja2
+template and returned to the CV Generation Endpoint.
+
+### CV Delivery:
+The generated CV is sent back to the UI (Angular), where the
+website user can download or view it.
+
+### External API User Interaction:
+External API users can interact directly with the CV Generation
+Endpoint.
+They can submit data and receive a CV similarly to how the
+website user interacts with the system.
+
+![workflow](images/Workflow.png)
+
 ## Installation
 
 ### Requirements
